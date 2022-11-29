@@ -1,0 +1,6 @@
+adresse ip : 141.94.61.8
+nom d'utilisateur : root
+mot de passe : nom de l'entreprise suivi de l'Initial des membres du groupe dans l'ordre élève1, élève2 etc...
+liens phpmyadmin : http://141.94.61.8/phpmyadmin/
+dossier de travail web : /var/www/projet-bts/
+port mysql : 3306
