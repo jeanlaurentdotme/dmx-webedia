@@ -11,3 +11,7 @@ accès proxmox (pour la console ssh quand on est a la providence) : https://pve.
 > nom d'utilisateur : projet-bts
 > mot de passe : même que celui de la vm
 pour ouvrir une console double cliquer sur le numéro 1508
+
+connexion à la bdd : 
+> login : bdd
+> mdp : bdd
