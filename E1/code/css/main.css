@@ -1,0 +1,52 @@
+body
+{
+    background-image:url('images/kcorp.jpg');
+    background-size: 100%;
+    background-attachment:fixed;
+}
+header{
+    font-size: 40px;
+}
+
+.menu
+{
+    color: rgb(45, 255, 0) ;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: rgb(70, 70, 70) ;
+    border-spacing: 5px;
+    width: 12%;
+    height: 880px;
+    float: left;
+    border-width: 2px;
+    border-style: solid;
+    border-image: linear-gradient(to bottom, rgb(45, 255, 0), rgb(255, 0, 230)) 1;
+    background-color: rgb(70, 70, 70) ;
+    text-align: center ;
+}
+.scene
+{
+background-color: rgba(240, 240, 240, 0.5);
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+float:right;
+width: 88%;
+height: 880px;
+border-collapse: separate;
+text-align: center ;
+}
+table, th, td{
+    border:1px solid black;
+}
+.avatar
+{
+    height:200px;
+    width:200px;
+    background-color: none;
+}
+tr
+{
+    height: 15%;
+}
+.img
+{
+    background-color: none;
+}
