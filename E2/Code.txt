@@ -1,0 +1,57 @@
+#include <LiquidCrystal.h>
+
+int pinR = 11;
+int pinB = 9;
+int pinG = 10;
+LiquidCrystal lcd( 7, 6, 5, 4, 3, 2);
+
+int potenR;
+int potenB;
+int potenG;
+
+float valeurR;
+float valeurB;
+float valeurG;
+
+void setup()
+{
+  pinMode(11, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(9, OUTPUT);
+  lcd.begin(16,2);
+  
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  potenR = map(analogRead(A0), 0, 1023, 0, 255);
+  potenG = map(analogRead(A1), 0, 1023, 0, 255);
+  potenB = map(analogRead(A2), 0, 1023, 0, 255);
+  
+  analogWrite(pinR, potenR);
+  analogWrite(pinB, potenB);
+  analogWrite(pinG, potenG);
+  lcd.setCursor(0, 1);
+  lcd.print("              ");
+  lcd.setCursor(1, 1);
+  lcd.print(potenR);
+  lcd.setCursor(5, 1);
+  lcd.print(potenG);
+  lcd.setCursor(9, 1);
+  lcd.print(potenB);
+  
+  lcd.setCursor(0, 0);
+  lcd.print("| R | G | B |");
+  
+  delay(50);
+  
+  Serial.print(" Red: ");
+  Serial.print(potenR);
+  Serial.print(" Blue: ");
+  Serial.print(potenB);
+  Serial.print(" Green: ");
+  Serial.println(potenG);
+  
+  delay(100);
+}
