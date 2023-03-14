@@ -10,6 +10,12 @@
   <link rel="icon" type="image/png" href="images/icone.png"/>
 </head>
 <body>
-    <a href="accueil.php">Espace membre</a>
+    <p>Connexion à l'espace membre :</p>
+    <form action="connexion.php" method="post">
+        login : <input type="text" name="login" value="">
+        mot de passe : <input type="password" name="pwd" value="">
+        <input type="submit" name="connexion" value="Connexion">
+    </form>
+    <a href="inscription.php">S'inscrire</a>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
-define ('SERVEUR', "localhost:3306");
-define ('LOGIN', "bdd");
-define ('MDP', "bdd");
+define ('SERVEUR', '192.168.64.144');
+define ('LOGIN', "root");
+define ('MDP', "root");
 define ('BDD', "PROJETWEBEDIA");
 ?>

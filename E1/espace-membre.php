@@ -14,8 +14,11 @@ if (!isset($_SESSION['login'])){header('Location: index.php');
   <link rel="icon" type="image/png" href="images/icone.png"/>
 </head>
 <body>
+  <?php
+    $pseudo = mysqli_query($connexion, 'SELECT nom FROM User WHERE login="'.$_SESSION['login'].'"')
+  ?>
     <p><strong>ESPACE MEMBRES</strong><br />
-    Bienvenue <?php echo htmlentities(trim($_SESSION['login']));?> !<br/>
+    Bienvenue <?php echo $pseudo?> !<br/>
     <a href="deconnexion.php">Déconnexion</a>
     </p>
 </body>
