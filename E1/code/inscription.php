@@ -10,7 +10,7 @@
 </head>
 <body>
     Inscription à l'espace membre :<br/>
-    <form action="verification.php" method="post">
+    <form action="verifinscription.php" method="post">
         pseudo<input type="text" name="nom" value=""><br />
         login<input type="text" name="login" value=""><br />
         mot de passe<input type="password" name="mdp1" value=""><br />
