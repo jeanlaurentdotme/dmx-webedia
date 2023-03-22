@@ -3,7 +3,7 @@
 #include <iostream>
 #include <stdio.h>
 
-#include "mysql_connection.h"
+#include <mysql_connection.h>
 #include <cppconn/driver.h>
 #include <cppconn/exception.h>
 #include <cppconn/prepared_statement.h>
@@ -28,29 +28,39 @@ int main(int argc, char ** argv)
 		driver = get_driver_instance();
 		con = driver->connect(server, username, password);
 	}
-	catch (sql::SQLException e)
+	catch (sql::SQLException e)  //erreur lors de la connexion
 	{
-		cout << "Could not connect to server. Error message: " << e.what() << endl;
+		cout << "Impossible de se connecter au serveur, code d'erreur : " << e.what() << endl;
 		system("pause");
 		exit(1);
 	}
 
-	//please create database "quickstartdb" ahead of time
 	con->setSchema("quickstartdb");
-
+/*
 	stmt = con->createStatement();
 	stmt->execute("DROP TABLE IF EXISTS inventory");
 	cout << "Finished dropping table (if existed)" << endl;
 	stmt->execute("CREATE TABLE inventory (id serial PRIMARY KEY, name VARCHAR(50), quantity INTEGER);");
 	cout << "Finished creating table" << endl;
 	delete stmt;
+*/
 
-	pstmt = con->prepareStatement("INSERT INTO inventory(name, quantity) VALUES(?,?)");
-	pstmt->setString(1, "banana");
-	pstmt->setInt(2, 150);
-	pstmt->execute();
-	cout << "One row inserted." << endl;
+	//ajout d'une scene
+	void createScene(int id, string name) {
+		pstmt = con->prepareStatement("INSERT INTO scene(id, name) VALUES(?,?)");
+		pstmt->execute();
+		cout << "Une scene ajoutée." << endl;
+	}
 
+	//modification d'une scene
+	void updateScene(int id, string name) {
+		pstmt = con->prepareStatement("INSERT INTO scene(id, name) VALUES(?,?) WHERE (id = id, )";
+		pstmt->execute();
+		cout << "Une scene ajoutée." << endl;
+	}
+	
+	//pstmt->setString(, "");
+	//pstmt->setInt(2, 150);
 	pstmt->setString(1, "orange");
 	pstmt->setInt(2, 154);
 	pstmt->execute();
@@ -64,5 +74,6 @@ int main(int argc, char ** argv)
 	delete pstmt;
 	delete con;
 	system("pause");
+
 	return 0;
 }
