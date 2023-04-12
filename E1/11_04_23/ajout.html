@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>Gestion de scènes</title>
+    <link rel='stylesheet' href='css/test.css'/>
+  <!---
+    <script src='main.js'></script>
+  -->
+  <link rel="icon" type="image/png" href="images/icone.png"/>
+</head>
+<body>
+    <header>Créez une nouvelle scène</header>
+        <div height="1800px" width="100%">
+            <div>
+                <table class="menu">
+                    <tr>
+                        <td><a href="basedescenes.html">Personnalisation de l'interface</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="ajout.html">Ajouter une scène</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="modification.html">Modifier une scène</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="suppression.html">Supprimer une scène</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="index.php">Changer de compte</a></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="scene">
+                <form action="ajoutbdd.php" method="post">
+                Nom<input type="text" name="nom" value=""><br />
+                Couleur<input type="color" name="couleur" value=""><br />
+                <input type="submit" name="Enregistrer" value="Enregistrer">
+                </form>
+            </div>
