@@ -12,21 +12,21 @@
 #include "point.h"
 using namespace std;
 
-const string server = "tcp://141.94.61.8:3306";
-const string username = "bdd@141.94.61.8";
-const string password = "bdd";
+const string server = "tcp://192.168.44.144";
+const string username = "root@192.168.44.144";
+const string password = "root";
 
-int main(int argc, char ** argv)
-{
-	sql::Driver *driver;
-	sql::Connection *con;
-	sql::Statement *stmt;
-	sql::PreparedStatement *pstmt;
+sql::Driver *driver;
+sql::Connection *con;
+sql::Statement *stmt;
+sql::PreparedStatement *pstmt;
 
+void connexionbdd() {
 	try
 	{
 		driver = get_driver_instance();
 		con = driver->connect(server, username, password);
+		cout << "La connexion à bien été effectué";
 	}
 	catch (sql::SQLException e)  //erreur lors de la connexion
 	{
@@ -34,8 +34,29 @@ int main(int argc, char ** argv)
 		system("pause");
 		exit(1);
 	}
+}
 
-	con->setSchema("quickstartdb");
+	//ajout d'une scene
+	void createScene(string name) {
+		/*
+		id clé primaire auto incremente
+		*/
+		pstmt = con->prepareStatement("INSERT INTO scene(name) VALUES(name)");
+		pstmt->setString(1, name);
+		pstmt->execute();
+		cout << "Une scene ajoutée." << endl;
+	}
+
+
+int main(int argc, char ** argv)
+{
+
+	connexionbdd();
+	createScene("test");
+
+	string nom_scene = "jeu_test1";
+
+	//con->setSchema("quickstartdb");
 /*
 	stmt = con->createStatement();
 	stmt->execute("DROP TABLE IF EXISTS inventory");
@@ -45,23 +66,18 @@ int main(int argc, char ** argv)
 	delete stmt;
 */
 
-	//ajout d'une scene
-	void createScene(int id, string name) {
-		pstmt = con->prepareStatement("INSERT INTO scene(id, name) VALUES(?,?)");
-		pstmt->execute();
-		cout << "Une scene ajoutée." << endl;
-	}
+
 
 	//modification d'une scene
-	void updateScene(int id, string name) {
+/*	void updateScene(int id, std::string name){
 		pstmt = con->prepareStatement("INSERT INTO scene(id, name) VALUES(?,?) WHERE (id = id, )";
 		pstmt->execute();
 		cout << "Une scene ajoutée." << endl;
-	}
+	}*/
 	
 	//pstmt->setString(, "");
 	//pstmt->setInt(2, 150);
-	pstmt->setString(1, "orange");
+	/*pstmt->setString(1, "orange");
 	pstmt->setInt(2, 154);
 	pstmt->execute();
 	cout << "One row inserted." << endl;
@@ -70,10 +86,10 @@ int main(int argc, char ** argv)
 	pstmt->setInt(2, 100);
 	pstmt->execute();
 	cout << "One row inserted." << endl;
-
+	
 	delete pstmt;
 	delete con;
 	system("pause");
 
-	return 0;
+	return 0;*/
 }

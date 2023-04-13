@@ -3,7 +3,7 @@
 
 class Scene {
 public:
-	void createScene(int id, std::string name);
+	void createScene(std::string name);
 	void updateScene(int id, std::string name);
 	void deleteScene(int id);
 
