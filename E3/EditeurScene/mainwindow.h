@@ -20,5 +20,8 @@ private:
     Ui::MainWindow *ui;
 
     QSqlDatabase db;
+
+public slots:
+    void SeConnecter();
 };
 #endif // MAINWINDOW_H
