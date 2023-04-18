@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>Gestion de scènes</title>
+    <link rel='stylesheet' href='css/test.css'/>
+  <!---
+    <script src='main.js'></script>
+  -->
+  <link rel="icon" type="image/png" href="images/icone.png"/>
+</head>
+<body>
+    <form>
+    <input type="button" value="Changer la couleur de fond" onClick="ConfirmMessage()">
+    </form>
+    <script type="text/javascript">
+       function ConfirmMessage() {
+           if (confirm("Voulez-vous changer la couleur de fond de page ?")) {
+               // Clic sur OK
+               document.body.style.backgroundColor="#ccc";
+           }
+       }
+    </script>
+</body>
+</html>
