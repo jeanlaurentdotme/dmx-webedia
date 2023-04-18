@@ -23,5 +23,6 @@ private:
 
 public slots:
     void SeConnecter();
+    void CreerScene();
 };
 #endif // MAINWINDOW_H

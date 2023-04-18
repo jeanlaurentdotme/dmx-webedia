@@ -6,6 +6,9 @@
 #include <QtGui>
 #include <QCoreApplication>
 #include <QtWidgets/QMainWindow>
+#include <QLineEdit>
+#include <qlineedit.h>
+#include <QList>
 
 
 QVariant variant;
@@ -30,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
     db.setPassword("root");
     db.setDatabaseName("PROJETWEBEDIA");
 
- /*   if(db.open())
+    if(db.open())
        {
            qDebug() << "Connexion réussie à " << db.hostName();
        }
@@ -39,9 +42,9 @@ MainWindow::MainWindow(QWidget *parent)
            qDebug() << "La connexion a échouée !";
 
        }
-*/
+
 /*    QSqlQuery query;
-    if(query.exec("SELECT nom FROM SceneTest"))
+    if(query.exec("INSERT INTO SceneTest(id,nom,couleurscene,L1,L2,L3) VALUES (0,'Testcpp', '#814603', '#814603' , '#814603' , '#814603'"))
     {
         while(query.next())
         {
@@ -53,12 +56,30 @@ MainWindow::MainWindow(QWidget *parent)
             }
         }
     }*/
+
+/*    //ajouter des valeurs dans scene test
+ *    QSqlQuery query;
+    query.exec("INSERT INTO SceneTest(nom,couleurscene,L1,L2,L3)"
+               "VALUES ('Testcpp',#814603,#814603,#814603,#814603)");*/
+
+    //ajouter valeur dans scenetest avec vérification console
+    /*QSqlQuery query;
+    if(query.exec("INSERT INTO SceneTest(nom,couleurscene,L1,L2,L3) VALUES ('Testcpp','#814603','#814603','#814603','#814603')"))
+    {
+        std::cout << "La scène à bien été ajoutée" << std::endl;
+    }
+    else
+    {
+        std::cout << "Une erreur s'est produite. La scène n'a pas été crée " << std::endl << q2c(query.lastError().text()) << std::endl;
+    }*/
+
 }
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
+//bouton se connecter à la BDD relié à QT
 void MainWindow::SeConnecter()
 {
     if(db.open())
@@ -66,9 +87,23 @@ void MainWindow::SeConnecter()
            qDebug() << "Connexion réussie à " << db.hostName();
            ui->label->setText("Vous vous êtes bien connecté à la BDD");
        }
-       else
+       else  //si elle ne se connecte pas, message d'erreur
        {
            qDebug() << "La connexion a échouée !";
 
        }
+}
+
+//bouton créer une scène
+void MainWindow::CreerScene()
+{
+    QSqlQuery query;
+    if(query.exec("INSERT INTO SceneTest(nom,couleurscene,L1,L2,L3) VALUES ('Testcpp','#814603','#814603','#814603','#814603')"))
+    {
+        std::cout << "La scène à bien été ajoutée" << std::endl;
+    }
+    else
+    {
+        std::cout << "Une erreur s'est produite. La scène n'a pas été crée " << std::endl << q2c(query.lastError().text()) << std::endl;
+    }
 }
