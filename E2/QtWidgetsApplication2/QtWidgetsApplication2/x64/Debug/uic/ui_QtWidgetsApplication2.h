@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -39,6 +40,7 @@ public:
     QSlider *verticalSlider;
     QSlider *verticalSlider_2;
     QSlider *verticalSlider_3;
+    QCheckBox *CheckBoxPotValues;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -67,7 +69,7 @@ public:
         pushButton_2->setGeometry(QRect(470, 310, 81, 31));
         portStatusLabel = new QLabel(centralWidget);
         portStatusLabel->setObjectName(QString::fromUtf8("portStatusLabel"));
-        portStatusLabel->setGeometry(QRect(270, 80, 101, 16));
+        portStatusLabel->setGeometry(QRect(260, 70, 101, 16));
         lineEdit = new QLineEdit(centralWidget);
         lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
         lineEdit->setGeometry(QRect(10, 310, 451, 31));
@@ -86,6 +88,9 @@ public:
         verticalSlider_3->setGeometry(QRect(690, 120, 22, 160));
         verticalSlider_3->setMaximum(1024);
         verticalSlider_3->setOrientation(Qt::Vertical);
+        CheckBoxPotValues = new QCheckBox(centralWidget);
+        CheckBoxPotValues->setObjectName(QString::fromUtf8("CheckBoxPotValues"));
+        CheckBoxPotValues->setGeometry(QRect(630, 310, 70, 17));
         QtWidgetsApplication2Class->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(QtWidgetsApplication2Class);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
@@ -110,6 +115,7 @@ public:
         label_2->setText(QCoreApplication::translate("QtWidgetsApplication2Class", "Donn\303\251es re\303\247ues :", nullptr));
         pushButton_2->setText(QCoreApplication::translate("QtWidgetsApplication2Class", "Envoyer", nullptr));
         portStatusLabel->setText(QCoreApplication::translate("QtWidgetsApplication2Class", "Status port : Ferm\303\251", nullptr));
+        CheckBoxPotValues->setText(QCoreApplication::translate("QtWidgetsApplication2Class", "potValues", nullptr));
     } // retranslateUi
 
 };

@@ -53,6 +53,7 @@ QtWidgetsApplication2::QtWidgetsApplication2(QWidget *parent)
                 break;
             }
         }
+
     }
 }
 
@@ -85,49 +86,47 @@ void QtWidgetsApplication2::onSerialPortReadyRead()
         if (json.contains("type") && json["type"].isString())
         {
             QString type = json["type"].toString();
-
             if (type == "potValues")
             {
-                if (json.contains("p1"))
-                {
-                    QJsonValue p1Obj = json.value("p1");
+                 if (json.contains("p1"))
+                 {
+                   QJsonValue p1Obj = json.value("p1");
                     int val = p1Obj.toInt(-1);
 
                     if (val >= 0)
                     {
-                        ui.verticalSlider->setValue(val);
-                        potentiometre1 = val;
+                       ui.verticalSlider->setValue(val);
+                       potentiometre1 = val;
                     }
-                }
+                 }
 
-                /*if (json.contains("p2"))
-                {
-                    QJsonValue p2Obj = json.value("p2");
-                    int val = p2Obj.toInt(-1);
-
-                    if (val >= 0)
+                    /*if (json.contains("p2"))
                     {
-                        ui.verticalSlider_2->setValue(val);
+                        QJsonValue p2Obj = json.value("p2");
+                        int val = p2Obj.toInt(-1);
+
+                        if (val >= 0)
+                        {
+                            ui.verticalSlider_2->setValue(val);
+                        }
                     }
-                }
 
-                if (json.contains("p3"))
-                {
-                    QJsonValue p3Obj = json.value("p3");
-                    int val = p3Obj.toInt(-1);
-
-                    if (val >= 0)
+                    if (json.contains("p3"))
                     {
-                        ui.verticalSlider_3->setValue(val);
-                    }
-                }*/
+                        QJsonValue p3Obj = json.value("p3");
+                        int val = p3Obj.toInt(-1);
+
+                        if (val >= 0)
+                        {
+                            ui.verticalSlider_3->setValue(val);
+                        }
+                    }*/
             }
             else if (type == "check")
             {
                 foundPort = true;
             }
         }
-
         buffer = "";
         port->write("potValues");
     }

@@ -1,2 +1,5 @@
-﻿  QtWidgetsApplication2.cpp
+﻿  moc QtWidgetsApplication2.h
+  QtWidgetsApplication2.cpp
+  main.cpp
+  moc_QtWidgetsApplication2.cpp
   QtWidgetsApplication2.vcxproj -> C:\Users\Valentin\source\repos\QtWidgetsApplication2\x64\Debug\QtWidgetsApplication2.exe

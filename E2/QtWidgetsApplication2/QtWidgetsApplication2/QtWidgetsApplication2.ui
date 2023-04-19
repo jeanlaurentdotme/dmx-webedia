@@ -76,8 +76,8 @@
    <widget class="QLabel" name="portStatusLabel">
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>80</y>
+      <x>260</x>
+      <y>70</y>
       <width>101</width>
       <height>16</height>
      </rect>
@@ -142,6 +142,19 @@
     </property>
     <property name="orientation">
      <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="CheckBoxPotValues">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>310</y>
+      <width>70</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>potValues</string>
     </property>
    </widget>
   </widget>
