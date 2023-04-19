@@ -1,24 +1,24 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+/*#ifndef MODIFICATION_H
+#define MODIFICATION_H
 
 #include <QMainWindow>
 #include <QSqlDatabase>
 #include <QString>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui { class modification; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
+
+class modification : public QWidget
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    modification();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::modification *ui;
     QSqlDatabase db;
     QString nom;
     QString couleurscene;
@@ -29,7 +29,8 @@ private:
 public slots:
     void SeConnecter();
     void CreerScene();
-    void AfficherListeScene();
     void ModifScene();
 };
-#endif // MAINWINDOW_H
+
+#endif // MODIFICATION_H
+*/
