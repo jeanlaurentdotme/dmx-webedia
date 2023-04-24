@@ -13,6 +13,7 @@
 #include <QMessageBox>
 #include <QString>
 #include <QTableWidget>
+#include <stdlib.h>
 
 
 /*
@@ -175,7 +176,7 @@ void MainWindow::CreerScene()
 void MainWindow::AfficherListeScene()
 {
     QSqlQueryModel *model = new QSqlQueryModel();
-    model->setQuery( "SELECT nom FROM SceneTest" );
+    model->setQuery( "SELECT id, nom FROM SceneTest" );
 
     QTableView *view = new QTableView();
     view->setModel( model );
@@ -183,13 +184,82 @@ void MainWindow::AfficherListeScene()
 }
 
 
-//bouton modifier une scène en fonction de son id---------------------------------------------------------------------------------------------------------------
-void MainWindow::ModifScene()
+//bouton rentrer l'id de la scène que l'on souhaite modifier---------------------------------------------------------------------------------------------------------------
+void MainWindow::RentrerIdModifScene()
 {
     //variable de l'id rentré qui va permettre de modifier la scène voulu
-    QString idModif = ui->lineEdit_6->text();
+    idModif = ui->lineEdit_6->text();
 
+
+    ui->label_9->setText("Vous avez sélectionner la modification de la scène id = " +idModif);
+    //test si l'id rentrer est bien stocker dans idModif
     /*qDebug() << "L'id choisi est " << idModif;*/
 
+    //transforme l'id modif en int pour l'étape suivante
+    bool ok;
+    idModif2 = 0;
+    idModif2 = idModif.toInt(&ok, 10);
 
+
+    //qDebug() << "L'id choisi est " << idModif2;
+}
+
+/*bool isNumeric(std::string const &str)
+{
+    auto it = str.begin();
+    while (it != str.end() && std::isdigit(*it)) {
+        it++;
+    }
+    return !str.empty() && it == str.end();
+}*/
+
+//bouton modifier la scène en fonction de l'id choisi----------------------------------------------------------------------------------------------------------------------
+void MainWindow::ModifScene()
+{
+    qDebug() << idModif2;
+    //Message d'erreur dans le cas ou aucun ID n'est enregistrer
+    if (idModif2==0 /*&& std::atoi(idModif) == 0 */)
+    {
+            ui->label_9->setText("Vous devez d'abord rentrer l'ID de la scène à modifier");
+    }
+    else
+    {
+        QString nomModif = ui->lineEdit_8->text();
+        QString couleursceneModif = ui->lineEdit_11->text();
+        QString couleurL1Modif = ui->lineEdit_7->text();
+        QString couleurL2Modif = ui->lineEdit_10->text();
+        QString couleurL3Modif = ui->lineEdit_9->text();
+
+
+
+        //test si les valeur sont bien rentré
+        /*qDebug() << "Le nom est " << nomModif;
+        qDebug() << "La couleur de la scène est " << couleursceneModif;
+        qDebug() << "La couleur de la première lumière est " << couleurL1Modif;
+        qDebug() << "La couleur de la seconde lumière est " << couleurL2Modif;
+        qDebug() << "La couleur de la troisième lumière est " << couleurL3Modif;*/
+
+
+        //modification de la scène
+        qDebug() << "UPDATE SceneTest SET nom = '"+nomModif+"', couleurscene = '"+couleursceneModif+"', L1 = '"+couleurL1Modif+"', L2 = '"+couleurL2Modif+"', L3 = '"+couleurL3Modif+"' WHERE id = "+idModif;
+        QSqlQuery query;
+        if(query.exec("UPDATE SceneTest SET nom = '"+nomModif+"', couleurscene = '"+couleursceneModif+"', L1 = '"+couleurL1Modif+"', L2 = '"+couleurL2Modif+"', L3 = '"+couleurL3Modif+"' WHERE id = "+idModif))
+        {
+            std::cout << "La scène à bien été modifiée" << std::endl;
+            //ui->label_7->setText("La scène à bien été ajoutée");
+        }
+        else
+        {
+            std::cout << "Une erreur s'est produite. La scène n'a pas été modifiée " << std::endl << q2c(query.lastError().text()) << std::endl;
+        }
+    }
+
+void MainWindow::SupprimerScene()
+{
+    //Message d'erreur dans le cas ou aucun ID n'est enregistrer
+    if (idModif2==0 /*&& std::atoi(idModif) == 0 */)
+    {
+            ui->label_9->setText("Vous devez d'abord rentrer l'ID de la scène à supprimer");
+    }
+}
 }
