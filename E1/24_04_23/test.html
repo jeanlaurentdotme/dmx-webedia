@@ -1,0 +1,557 @@
+<style type="text/css">
+    /*
+    
+    Darko Bunic
+    http://www.redips.net/
+    May, 2009.
+    
+    */
+    /*
+         This script downloaded from www.JavaScriptBank.com
+         Come to view and download over 2000+ free javascript at www.JavaScriptBank.com
+    */
+    body{
+        font-family: arial;
+    }
+    
+    
+    /* drag objects */
+    .drag{
+        position: relative;
+        cursor: move;
+        margin: auto;
+        background-color: white;
+        text-align: center;
+        opacity: 0.7;
+        filter: alpha(opacity=70);
+        /* without width, IE6/7 will not apply filter/opacity to the element ?! */
+        width: 87px;
+    }
+    
+    
+    /* drag objects border for the first table */
+    .t1 {border: 2px solid #499B33;}
+    /* drag object border for the second table */
+    .t2 {border: 2px solid #2D4B7A;}
+    /* forbidden cells */
+    .forbid{color: white; background-color: #9B9EA2;}
+    
+    
+    /* tables */
+    div#drag table{
+        background-color: #e0e0e0;
+        border-collapse: collapse;
+    }
+    
+    
+    /* table cells */
+    div#drag td{
+        width: 100px;
+        height: 28px;
+        border: 1px solid white;
+        font-size: 10pt;
+        text-align: center;
+        padding: 2px;
+    }
+    
+    </style>
+<script type="text/javascript">
+    /*
+    
+    Darko Bunic
+    http://www.redips.net/javascript/drag-and-drop-table-content/
+    version 1.2.2
+    May 27, 2009.
+    
+    */
+    
+    /*
+         This script downloaded from www.JavaScriptBank.com
+         Come to view and download over 2000+ free javascript at www.JavaScriptBank.com
+    */
+    
+    // parameters that can be changed
+    var hover_color = '#E7AB83';            // define hover color
+    var bound  = 25;                        // bound width for autoscroll
+    var speed  = 20;                        // scroll speed in milliseconds
+    var forbid = 'forbid';                  // cell class name where draggable element can not be dropped
+    
+    // other parameters
+    var obj = false;                        // draggable object
+    var obj_margin;            						  // space from clicked point to the object bounds (top, right, bottom, left)
+    var mouseButton = 0;										// if mouseButton == 1 then first mouse button is pressed
+    var mouseX, mouseY;    			            // mouse coordinates (used in onmousedown, onmousemove and autoscroll)
+    var window_width= 0, window_height=0;   // window width and height (parameters are set in onload and onresize event handler)
+    var scroll_width, scroll_height;        // scroll width and height of the window (it is usually greater then window)
+    var edgeX=0, edgeY=0;                   // autoscroll bound values (closer to the page edge, faster scroll) calculated in onmousemove handler
+    var bgcolor_old; 										    // old cell background color 
+    var tables;                             // table offsets and row offsets (initialized in onload event)
+    var autoscrollX_flag=autoscrollY_flag=0;// needed to prevent multiple calls of autoscrollX and autoscrollY from onmousemove event handler 
+    
+    // selected table, row and cell
+    var table = table_old = null;
+    var row   = row_old   = null;
+    var cell  = cell_old  = null;
+    
+    
+    
+    //
+    // event handlers
+    //
+    
+    
+    
+    // onLoad event
+    window.onload = function (){
+        // collect tables inside div with id=drag
+        tables = document.getElementById('drag').getElementsByTagName('table');
+        // set initial window width/height, scroll width/height and define onresize event handler
+        // onresize event handler calls calculate columns
+        handler_onresize();
+        window.onresize = handler_onresize;
+        // collect div elements inside tables (draggable elements)
+        var divs = document.getElementById('drag').getElementsByTagName('div');
+        // attach onmousedown event handler to DIV elements
+        for (var i=0; i<divs.length; i++) divs[i].onmousedown = handler_onmousedown;
+        // dissable text selection for IE
+        document.onselectstart = function(e) {return false}
+        // attach onscroll event (needed for recalculating table cells positions)
+        window.onscroll = calculate_cells;
+    }
+    
+    
+    
+    // onresize window event handler
+    // this event handler sets window_width and window_height variables used in onmousemove handler
+    function handler_onresize(){
+        // Non-IE
+      if (typeof(window.innerWidth) == 'number'){
+        window_width  = window.innerWidth;
+        window_height = window.innerHeight;
+      }
+      // IE 6+ in 'standards compliant mode'
+      else if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)){
+        window_width  = document.documentElement.clientWidth;
+        window_height = document.documentElement.clientHeight;
+      }
+      // IE 4 compatible
+      else if (document.body && (document.body.clientWidth || document.body.clientHeight)){
+        window_width  = document.body.clientWidth;
+        window_height = document.body.clientHeight;
+      }
+      // set scroll size (onresize, onload and onmouseup event)
+        scroll_width  = document.documentElement.scrollWidth;
+        scroll_height = document.documentElement.scrollHeight;
+        // calculate colums and rows offset (cells dimensions)
+        calculate_cells();  
+    }
+    
+    
+    
+    // onmousedown handler
+    function handler_onmousedown(e){
+        var evt = e || window.event; // define event (cross browser)
+        obj = this;                  // set a reference to the object that is moved
+        // set clicked position
+        mouseX = evt.clientX;
+        mouseY = evt.clientY;
+        // and pressed mouse button
+        if (evt.which) mouseButton = evt.which;
+        else           mouseButton = evt.button;
+        // activate onmousemove and onmouseup event handlers on document level
+        // if left mouse button is pressed
+        if (mouseButton == 1){
+            document.onmousemove = handler_onmousemove;
+            document.onmouseup   = handler_onmouseup;
+        }
+        // set current table, row and cell
+        set_tcr(evt);		
+        // remember background cell color
+        bgcolor_old = tables[table].rows[row].cells[cell].style.backgroundColor;
+        // define object offset
+        var offset = box_offset(obj);
+        // calculate ofsset from the clicked point inside element to the
+        // top, right, bottom and left side of the element
+        obj_margin = [mouseY-offset[0], offset[1]-mouseX, offset[2]-mouseY, mouseX-offset[3]];
+        // disable text selection
+        return false;
+    }
+    
+    
+    
+    // onmouseup handler
+    function handler_onmouseup(e){
+        // reset mouseButton variable
+        mouseButton = 0;
+        // reset left and top styles
+        obj.style.left = 0;
+        obj.style.top  = 0;
+        // if object was dropped inside table then place it to the new location
+        if (table < tables.length){
+            tables[table].rows[row].cells[cell].style.backgroundColor = bgcolor_old;
+            tables[table].rows[row].cells[cell].appendChild(obj);
+        }
+        // else place it to the last possible location
+        else{
+            tables[table_old].rows[row_old].cells[cell_old].style.backgroundColor = bgcolor_old;
+            tables[table_old].rows[row_old].cells[cell_old].appendChild(obj);
+        }
+        // detach onmousemove and onmouseup events
+        document.onmousemove = null;
+        document.onmouseup   = null;
+        // recalculate table cells and scrollers because cell content could change row dimensions 
+        calculate_cells();
+        // document.body.scroll... only works in compatibility (aka quirks) mode,
+        // for standard mode, use: document.documentElement.scroll...
+        scroll_width  = document.documentElement.scrollWidth;
+        scroll_height = document.documentElement.scrollHeight;	
+        // reset autoscroll flags
+        autoscrollX_flag = autoscrollY_flag = 0;
+        // reset old positions
+        table_old = row_old = cell_old = null;
+    }
+    
+    
+    
+    // onmousemove handler for the document level
+    // activated after left mouse button is pressed on draggable element
+    function handler_onmousemove(e){
+        // define event (FF & IE)
+        var evt = e || window.event;
+        // set left and top styles for the moved element if element is inside window
+        // this conditions will stop element on window bounds
+        if (evt.clientX > obj_margin[3] && evt.clientX < window_width - obj_margin[1])  obj.style.left = (evt.clientX - mouseX) + "px";
+        if (evt.clientY > obj_margin[0] && evt.clientY < window_height - obj_margin[2])	obj.style.top  = (evt.clientY - mouseY) + "px";
+        // set current table, row and cell
+        set_tcr(evt);
+        // if new location is inside table and new location is different then old location
+        // set background colors for the previous and new table cell
+        if (table < tables.length && (table != table_old || cell != cell_old || row != row_old)){
+            // set cell background color to the previous cell
+            if (table_old != null && row_old != null && cell_old != null)
+                tables[table_old].rows[row_old].cells[cell_old].style.backgroundColor = bgcolor_old;
+            // remember background color before setting the new background color
+            bgcolor_old = tables[table].rows[row].cells[cell].style.backgroundColor;
+            // set background color to the current table cell
+            tables[table].rows[row].cells[cell].style.backgroundColor = hover_color;
+            // remember current position (for table, row and cell)
+            table_old=table; row_old=row; cell_old=cell;
+        }
+        // test if is still first mouse button pressed (in case when user release mouse button out of a window)
+        if (evt.which) mouseButton = evt.which;
+        else           mouseButton = evt.button;
+        // if first mouse button is released
+        if (mouseButton != 1){handler_onmouseup(evt);	return;}	
+        // calculate horizontally crossed page bound
+        edgeX = bound - (window_width/2  > evt.clientX ? evt.clientX-obj_margin[3] : window_width - evt.clientX - obj_margin[1]);
+        // if element crosses page bound then set scroll direction and call auto scroll 
+        if (edgeX > 0){
+            // in case when object is only half visible (page is scrolled on that object)
+            if (edgeX > bound) edgeX = bound;
+            // set scroll direction: negative - left, positive - right
+            edgeX *= evt.clientX < window_width/2 ? -1 : 1; 
+            // remove onscroll event handler and call autoscrollY function only once
+            if (autoscrollX_flag++ == 0) {window.onscroll = null; autoscrollX()}
+        }
+        else edgeX = 0;
+        // calculate vertically crossed page bound
+        edgeY = bound - (window_height/2 > evt.clientY ? evt.clientY-obj_margin[0] : window_height - evt.clientY - obj_margin[2]);
+        // if element crosses page bound then set scroll direction and call auto scroll
+        if (edgeY > 0){
+            // in case when object is only half visible (page is scrolled on that object)
+            if (edgeY > bound) edgeY = bound;
+            // set scroll direction: negative - up, positive - down
+            edgeY *= evt.clientY < window_height/2 ? -1 : 1;
+            // remove onscroll event handler and call autoscrollY function only once
+            if (autoscrollY_flag++ == 0) {window.onscroll = null; autoscrollY()}
+        }
+        else edgeY = 0;
+    }
+    
+    
+    
+    //
+    // auto scroll functions
+    //
+    
+    
+    
+    // horizontal auto scroll function
+    function autoscrollX(call){
+        // define old scroll position and current scroll position
+        var old = 0; 
+        var scrollPosition = getScrollPosition('X');
+        // mouse button should be pressed and
+        // if moved element is over left or right margin
+        // scroll_width - window_width returns maximum horizontal scroll position
+        if (mouseButton == 1 && ((edgeX < 0 && scrollPosition > 0) || (edgeX > 0 && scrollPosition < (scroll_width - window_width)))){
+            // horizontal window scroll 
+            window.scrollBy(edgeX, 0);
+            // set previous scroll position and new after window is scrolled
+            old = scrollPosition;
+            scrollPosition = getScrollPosition('X');
+            // set style left for the moved element
+            obj.style.left = (parseInt(obj.style.left) + scrollPosition - old) + "px";
+            // move X point
+            mouseX -= scrollPosition - old; 
+            // recursive autoscroll call 
+            setTimeout("autoscrollX('recursive')", speed);
+        }
+        // autoscroll stopped by moving element out of the page edge
+        // or element faced maximum position (left or right)
+        else{
+            // recalculate cell positions if call was function itself (spare CPU if moving object across bound)
+            if (call == 'recursive') calculate_cells();
+            // return onscroll event handler and reset auto scroll flag
+            window.onscroll  = calculate_cells;
+            autoscrollX_flag = 0;
+        }
+    }
+    
+    
+    
+    // vertical auto scroll function
+    function autoscrollY(call){
+        var top;     // top style
+        var old = 0; // define old scroll position
+        // define current scroll position
+        var scrollPosition = getScrollPosition('Y');
+        // mouse button should be pressed and 
+        // if moved element is over page top or page bottom
+        // scroll_height - window_height returns maximum vertical scroll position
+        if (mouseButton == 1 && ((edgeY < 0 && scrollPosition > 0) || (edgeY > 0 && scrollPosition < (scroll_height - window_height)))){
+            // vertical window scroll 
+            window.scrollBy(0, edgeY);
+            // set previous scroll position and new after window is scrolled
+            old = scrollPosition;
+            scrollPosition = getScrollPosition('Y');
+            // set top style of the object
+            top = (isNaN(parseInt(obj.style.top)) ? 0 : parseInt(obj.style.top));
+            // set style top for the moved element
+            obj.style.top = (top + scrollPosition - old) + "px";
+            // move Y point
+            mouseY -= scrollPosition - old; 
+            // recursive autoscroll call 
+            setTimeout("autoscrollY('recursive')", speed);
+        }
+        // autoscroll stopped by moving element out of the page edge
+        // or element faced maximum position (top or bottom)
+        else{
+            // recalculate cell positions if call was function itself (spare CPU if moving object across bound)
+            if (call == 'recursive') calculate_cells();
+            // return onscroll event handler and reset auto scroll flag
+            window.onscroll  = calculate_cells;
+            autoscrollY_flag = 0;
+        }
+    }
+    
+    
+    
+    // function returns scroll position in array (variables scrollX & scrollY) set_scroll_position)
+    // input parameter is dimension (X or Y)
+    function getScrollPosition(d){
+        var scrollX, scrollY; // define scroll position variables
+        // Netscape compliant
+      if (typeof(window.pageYOffset) == 'number'){
+        scrollX = window.pageXOffset;
+        scrollY = window.pageYOffset;
+      }
+      // DOM compliant
+      else if (document.body && (document.body.scrollLeft || document.body.scrollTop)){
+        scrollX = document.body.scrollLeft;
+        scrollY = document.body.scrollTop;
+      }
+      // IE6 standards compliant mode
+      else if (document.documentElement && (document.documentElement.scrollLeft || document.documentElement.scrollTop)){
+        scrollX = document.documentElement.scrollLeft;
+        scrollY = document.documentElement.scrollTop;
+      }
+      // needed for IE6 (when vertical scroll bar was on the top)
+      else scrollX = scrollY = 0;
+      // return scroll position
+      if (d == 'X') return scrollX;
+      else          return scrollY
+    }
+    
+    
+    
+    //
+    // other functions
+    //
+    
+    
+    
+    // calculate table colums and row offsets (cells dimensions) 
+    function calculate_cells(){
+        // local variables used in for loops
+        var i, j;
+        // open loop for each HTML table inside id=drag (tables variable is initialized in onload event)
+        for (i=0; i<tables.length; i++){
+            // define row offsets variable
+            var row_offset = new Array();
+            // collect table rows and initialize row offsets array
+            var tr = tables[i].getElementsByTagName('tr');
+            // backward loop has better perfomance
+            for (j=tr.length-1; j>=0; j--) row_offset[j] = box_offset(tr[j]);
+            // save table informations (table offset and row offsets)
+            tables[i].offset     = box_offset(tables[i]);
+            tables[i].row_offset = row_offset;
+        }
+    }
+    
+    
+    
+    // function sets current table, row and cell
+    // please note that variables used in this function (table, cell and row)
+    // are defined at the beginning of the script (global scope) 
+    function set_tcr(evt){
+        // define variables for left & right cell offset
+        var offsetLeft, offsetRight;
+        // find table below draggable object
+        for (table=0; table < tables.length; table++){
+            // mouse pointer is inside table
+            if (tables[table].offset[3] < evt.clientX  &&  evt.clientX < tables[table].offset[1] &&	
+                    tables[table].offset[0] < evt.clientY  &&  evt.clientY < tables[table].offset[2]){
+                        // row offsets for the selected table (row bounds)
+                        var row_offset = tables[table].row_offset;
+                        // find the current row (loop will stop at the current row; row_offset[row][0] is row top offset)
+                        for (row=0; row<row_offset.length-1 && row_offset[row][0] < evt.clientY; row++)
+                            if (evt.clientY <= row_offset[row][2]) break;
+                        // do loop - needed for rowspaned cells (if there is any)
+                        do{
+                            // set the number of cells in the selected row
+                            var cells = tables[table].rows[row].cells.length - 1;
+                            // find current cell (X mouse position between cell offset left and right)
+                            for (cell = cells; cell >= 0 ; cell--){
+                                // row left offset + cell left offset
+                                offsetLeft  = row_offset[row][3] + tables[table].rows[row].cells[cell].offsetLeft;
+                                // cell right offset is left offset + cell width  
+                                offsetRight = offsetLeft + tables[table].rows[row].cells[cell].offsetWidth;
+                                // is mouse pointer is between left and right offset, then cell is found
+                                if (offsetLeft <= evt.clientX && evt.clientX < offsetRight) break;
+                            }
+                        } // mouse pointer is inside table but cell not found (hmm, rowspaned cell - try in upper row)
+                        while (cell == -1 && row-- > 0)
+                        // if cell is marked as 'forbid', then return previous location
+                        if (tables[table].rows[row].cells[cell].className == forbid) {table=table_old; row=row_old; cell=cell_old}
+                        // break table loop 
+                        break;
+            }
+        }
+    }
+    
+    
+    
+    // calculate object (box) offset (top, right, bottom, left)
+    // function returns array of box bounds
+    // used in calculate_cells and onmousedown event handler
+    function box_offset(box){
+        var oLeft = 0 - getScrollPosition('X'); // define offset left (take care of scroll position)
+        var oTop  = 0 - getScrollPosition('Y'); // define offset top (take care od scroll position)
+        // remember box object
+        var box_old = box;
+        // loop to the root element and return box offset (top, right, bottom, left)
+        do {oLeft += box.offsetLeft; oTop += box.offsetTop} while (box = box.offsetParent);
+        // return box offset array
+        //       top               right,                     bottom             left
+        return [ oTop, oLeft + box_old.offsetWidth, oTop + box_old.offsetHeight, oLeft ];
+    }
+    </script>
+<div id="drag">
+    <table align="center" cellspacing="0" cellpadding="0" border="0">
+        <colgroup>
+            <col width="100"/>
+            <col width="100"/>
+            <col width="100"/>
+            <col width="100"/>
+            <col width="100"/>
+        </colgroup>
+        <tr>
+            <td class="forbid">You</td>
+            <td class="forbid">can</td>
+            <td class="forbid">not</td>
+            <td class="forbid">drop</td>
+            <td class="forbid">here</td>
+        </tr>
+        <tr style="background-color: #eee">
+            <td valign="middle"><div class="drag t1">Drag</div></td>
+            <td></td>
+            <td><div class="drag t1">and</div></td>
+            <td><div class="drag t1">drop</div></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><div class="drag t1">content</div></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><div class="drag t1">table</div></td>
+        </tr>
+        <tr style="background-color: #eee">
+            <td></td>
+            <td><div class="drag t1">with</div></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><div class="drag t1">JavaScript</div></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr style="background-color: #eee">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <br/>
+    <br/>
+    <table align="center">
+        <colgroup>
+            <col width="100"/>
+            <col width="100"/>
+            <col width="100"/>
+            <col width="100"/>
+            <col width="100"/>
+        </colgroup>
+        <tr>
+            <td class="forbid" title="You can not drop here">Table2</td>
+            <td style="background-color: #eee"><div class="drag t2">and</div></td>
+            <td rowspan="3" style="background-color: #C6C8CB" title="rowspan 3"></td>
+            <td style="background-color: #eee"></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><div class="drag t2">Drag</div></td>
+            <td style="background-color: #eee"></td>
+            <td style="background-color: #eee"><div class="drag t2">drop</div></td>
+            <td><div class="drag t2">table</div></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="background-color: #C6C8CB" title="colspan 2"></td>
+            <td colspan="2" style="background-color: #C6C8CB" title="colspan 2"></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="background-color: #C6C8CB" title="colspan 2"></td>
+            <td rowspan="3" style="background-color: #C6C8CB" title="rowspan 3"></td>
+            <td colspan="2" style="background-color: #C6C8CB" title="colspan 2"></td>
+        </tr>
+        <tr>
+            <td><div class="drag t2">content</div></td>
+            <td style="background-color: #eee"></td>
+            <td style="background-color: #eee"></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="background-color: #eee"><div class="drag t2">with</div></td>
+            <td style="background-color: #eee"><div class="drag t2">JavaScript</div></td>
+            <td class="forbid" title="You can not drop here">Table2</td>
+        </tr>
+    </table>
+</div>

@@ -1,0 +1,14 @@
+Modif scenes : 
+
+UPDATE SceneTest SET nom="mysqli_escape_string($connexion, $_POST['nom'])", couleurscene="mysqli_escape_string($connexion, $_POST['background'])", L1="mysqli_escape_string($connexion, $_POST['L1'])", L2="mysqli_escape_string($connexion, $_POST['L2'])", L3="mysqli_escape_string($connexion, $_POST['L3'])" WHERE id=$sql['id']
+
+Supprimer scene :
+
+DELETE FROM Scene WHERE id=$data['id']
+
+Enregistrer la liste des scenes par user :
+
+for ($i=0, $i<20, $i++)
+{
+	UPDATE SceneParUserTest SET idUser="", idScene="", positionTableau=$i WHERE idUser="" AND positionTableau=$i;
+}
