@@ -1,0 +1,25 @@
+Fonctionnement ola dmx cmd
+
+ola_set_dmx -u 0 -d 0,1,2,3,4,5,6,7,8
+
+-u correspond à l’univers dans notre cas il n’est pas utilisé car un univers correspond à un seul ou plusieurs convertisseur usb vers dmx mis dans un genre de groupe.
+
+dans notre cas il n’y a qu’un seul univers que j’ai identifié par 0 lors de sa création.
+
+-d correspond à la trame dmx. En fait la trame dmx via cette commande est construite de sorte a ce que chaque canal soit séparé par une virgule. De ce fait si nous voulons adresser une valeur sur l’adresse dmx 510 il faudra mettre 509 valeurs avant la valeur à définir.
+
+
+
+
+fonctionnement pare led Ghost Ocuspot
+
+nous avons une par led de 8 canaux :
+Le premier canal sert à des fonctions d’automatisation dans notre cas il ne nous sera pas utile ça valeur restera a 0
+Le second canal sert à définir des couleurs macro quand nous définissons la valeur entre 10 et 19 du premier canal. Encore une fois dans notre cas il ne nous sera pas utile. Ça valeur sera de 0
+Le troisième canal de même il sert à définir la fréquence de répétition de certains effets tel que le stroboscope. Inutile pour le projet ça valeur sera de 0
+Le quatrième canal permet de définir la luminosité générale lors de l’utilisation des 4 prochains canaux. Dans notre cas la valeur sera surement fixée d’office a 255 et le réglage se fera via les couleurs directement.
+
+De ce fait le cinquième canal permet d’adresser le rouge, il sera lié au Middleware qui sera connecté a la base de donnée.
+Le sixième canal adresse le vert
+Le septième adressera le bleu
+Et le huitième adressera le blanc
