@@ -15,3 +15,9 @@ pour ouvrir une console double cliquer sur le numéro 1508
 connexion à la bdd : 
 > login : bdd
 > mdp : bdd
+
+
+BDD Pour l'appli C++ linux : 
+192.168.65.183
+> login : debian
+> mdp : debian
