@@ -1,0 +1,20 @@
+Twist-152
+Canal 1 : 0-131 = éclipse, 132-255 = Stroboscope 
+Canal 2 : bogo
+	> 1 : 0-15
+	> 2 : 16-31
+	> 1 : 32-47
+	>1 : 48-63
+	> 1 : 64-79
+	> 1 : 80-95
+	> 1 : 96-111
+	> 1 : 112-127
+	128-255 = défilement bogo (128 = low, 255= high)
+
+Canal 3 : ?
+Canal 4 : couleur
+	> 0 = blanc
+	> 7 = blanc|bleu
+	> 14 = bleu
+	> 21 = bleu|jaune
+	> 28 = jaune
