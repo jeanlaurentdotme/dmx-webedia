@@ -31,6 +31,11 @@ private:
     QString couleurL1Modif;
     QString couleurL2Modif;
     QString couleurL3Modif;
+    QString nomSelec;
+    QString couleurSceneSelec;
+    QString couleurL1Selec;
+    QString couleurL2Selec;
+    QString couleurL3Selec;
     int idModif2;
 
 public slots:
@@ -40,5 +45,7 @@ public slots:
     void RentrerIdModifScene();
     void ModifScene();
     void SupprimerScene();
+    void Exit();
+    void Reset();
 };
 #endif // MAINWINDOW_H

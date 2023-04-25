@@ -42,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
     db.setPassword("root");
     db.setDatabaseName("PROJETWEBEDIA");
 
+    /*
     //conexion à la BDD test sans fonction ---------------------------------------------------------------------------------------------------------------
     if(db.open())
        {
@@ -52,7 +53,7 @@ MainWindow::MainWindow(QWidget *parent)
            qDebug() << "La connexion a échouée !";
 
        }
-
+      */
 
 
     //afficher avec une recherche -------------------------------------------------------------------------------------------------------------------------
@@ -125,18 +126,18 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
 //bouton se connecter à la BDD relié à QT-----------------------------------------------------------------------------------------------------------------------
 void MainWindow::SeConnecter()
 {
-    if(db.open())
+    if(db.open()) //si la bdd se connecte
        {
-           qDebug() << "Connexion réussie à " << db.hostName();
+           //qDebug() << "Connexion réussie à " << db.hostName();
            ui->label->setText("Vous vous êtes bien connecté à la BDD");
        }
        else  //si elle ne se connecte pas, message d'erreur
        {
-           qDebug() << "La connexion a échouée !";
+           ui->label->setText("Erreur lors de la connexion, veuillez réessayer");
+           //qDebug() << "La connexion a échouée !";
 
        }
 }
@@ -144,14 +145,14 @@ void MainWindow::SeConnecter()
 //bouton créer une scène--------------------------------------------------------------------------------------------------------------------------------------------
 void MainWindow::CreerScene()
 {
-    //initialisation des variable relié au champ de texte à entrer pour pouvoir ajouter les nom et couleur de scène souhaiter par l'utilisateur
+    //initialisation des variables reliés au champ de texte à entrer pour pouvoir ajouter les nom et couleur de scène souhaiter par l'utilisateur
     QString nom = ui->lineEdit->text();
     QString couleurscene = ui->lineEdit_2->text();
     QString couleurL1 = ui->lineEdit_3->text();
     QString couleurL2 = ui->lineEdit_4->text();
     QString couleurL3 = ui->lineEdit_5->text();
 
-    //test si les valeur sont bien rentré
+    //test si les valeurs sont bien rentré
     /*qDebug() << "Le nom est " << nom;
     qDebug() << "La couleur de la scène est " << couleurscene;
     qDebug() << "La couleur de la première lumière est " << couleurL1;
@@ -162,26 +163,28 @@ void MainWindow::CreerScene()
     QSqlQuery query;
     if(query.exec("INSERT INTO SceneTest(nom,couleurscene,L1,L2,L3) VALUES (' " +nom+" ','"+couleurscene+"','"+couleurL1+"','"+couleurL2+"','"+couleurL3+"')"))
     {
-        std::cout << "La scène à bien été ajoutée" << std::endl;
-        ui->label_7->setText("La scène à bien été ajoutée");
+        //std::cout << "La scène à bien été ajoutée" << std::endl;
+        ui->label_7->setText("La scène à bien été crée");
     }
-    else
+    else // si l'ajout rencontre une erreur
     {
-        std::cout << "Une erreur s'est produite. La scène n'a pas été crée " << std::endl << q2c(query.lastError().text()) << std::endl;
+        ui->label_7->setText("Erreur lors de la création");
+        //std::cout << "Une erreur s'est produite. La scène n'a pas été crée " << std::endl << q2c(query.lastError().text()) << std::endl;
     }
 }
+
 
 
 //bouton affichage de la liste des scène QT---------------------------------------------------------------------------------------------------------------------
 void MainWindow::AfficherListeScene()
 {
     QSqlQueryModel *model = new QSqlQueryModel();
-    model->setQuery( "SELECT id, nom FROM SceneTest" );
-
+    model->setQuery( "SELECT id, nom FROM SceneTest" );  //on sélectionne l'ID et le nom car pas besoin d'afficher le reste
     QTableView *view = new QTableView();
     view->setModel( model );
     view->show();
 }
+
 
 
 //bouton rentrer l'id de la scène que l'on souhaite modifier---------------------------------------------------------------------------------------------------------------
@@ -191,7 +194,7 @@ void MainWindow::RentrerIdModifScene()
     idModif = ui->lineEdit_6->text();
 
 
-    ui->label_9->setText("Vous avez sélectionner la modification de la scène id = " +idModif);
+    //ui->label_9->setText("Vous avez sélectionner la scène id = " +idModif);
     //test si l'id rentrer est bien stocker dans idModif
     /*qDebug() << "L'id choisi est " << idModif;*/
 
@@ -200,11 +203,95 @@ void MainWindow::RentrerIdModifScene()
     idModif2 = 0;
     idModif2 = idModif.toInt(&ok, 10);
 
+    if(idModif2!=0)
+    {
+        ui->label_9->setText("Vous avez sélectionner la scène id = " +idModif);
+
+        //permet de mettre dans la variable nomselec le nom associé à l'ID choisi
+        QSqlQuery query;
+        if(query.exec("SELECT nom FROM SceneTest WHERE id =" +idModif))
+        {
+            while(query.next())
+            {
+                //qDebug() <<" SELECT nom FROM SceneTest WHERE id ="+idModif;
+                for(int x=0; x < query.record().count(); ++x)
+                {
+                    nomSelec = query.value(x).toString() ;
+                    //qDebug() << nomSelec;
+                }
+            }
+        }
+
+        //identique pour la couleur
+        QSqlQuery query2;
+        if(query2.exec("SELECT couleurscene FROM SceneTest WHERE id =" +idModif))
+        {
+            while(query2.next())
+            {
+                for(int x=0; x < query2.record().count(); ++x)
+                {
+                    couleurSceneSelec = query2.value(x).toString() ;
+                    //qDebug() << couleurSceneSelec;
+                }
+            }
+        }
+
+        //identique pour la couleur L1
+        QSqlQuery query3;
+        if(query3.exec("SELECT L1 FROM SceneTest WHERE id =" +idModif))
+        {
+            while(query3.next())
+            {
+                for(int x=0; x < query3.record().count(); ++x)
+                {
+                    couleurL1Selec = query3.value(x).toString() ;
+                    //qDebug() << couleurL1Selec;
+                }
+            }
+        }
+
+        //identique pour la couleur L2
+        QSqlQuery query4;
+        if(query4.exec("SELECT L2 FROM SceneTest WHERE id =" +idModif))
+        {
+            while(query4.next())
+            {
+                for(int x=0; x < query4.record().count(); ++x)
+                {
+                    couleurL2Selec = query4.value(x).toString() ;
+                    //qDebug() << couleurL2Selec;
+                }
+            }
+        }
+
+        //identique pour la couleur L3
+        QSqlQuery query5;
+        if(query5.exec("SELECT L3 FROM SceneTest WHERE id =" +idModif))
+        {
+            while(query5.next())
+            {
+                for(int x=0; x < query5.record().count(); ++x)
+                {
+                    couleurL3Selec = query5.value(x).toString() ;
+                    //qDebug() << couleurL3Selec;
+                }
+            }
+        }
+
+
+        ui->label_17->setText("La scène sélectionner est donc : id = "+idModif+ ", nom = " +nomSelec+ ", couleur = " +couleurSceneSelec);
+        ui->label_18->setText( "Lumière 1 = " +couleurL1Selec+ ", Lumière 2 = " +couleurL2Selec+ ", Lumière 3 = " +couleurL3Selec);
+    }
+    else
+    {
+         ui->label_9->setText("Vous devez rentrer un ID qui est un nombre entier non nul");
+    }
 
     //qDebug() << "L'id choisi est " << idModif2;
 }
 
-/*bool isNumeric(std::string const &str)
+/*  //test pour si numérique ou non (autre méthode utilisé ensuite)
+    bool isNumeric(std::string const &str)
 {
     auto it = str.begin();
     while (it != str.end() && std::isdigit(*it)) {
@@ -216,13 +303,13 @@ void MainWindow::RentrerIdModifScene()
 //bouton modifier la scène en fonction de l'id choisi----------------------------------------------------------------------------------------------------------------------
 void MainWindow::ModifScene()
 {
-    qDebug() << idModif2;
+    //qDebug() << idModif2;
     //Message d'erreur dans le cas ou aucun ID n'est enregistrer
     if (idModif2==0 /*&& std::atoi(idModif) == 0 */)
     {
-            ui->label_9->setText("Vous devez d'abord rentrer l'ID de la scène à modifier");
+            ui->label_9->setText("Vous devez d'abord rentrer l'ID de la scène à modifier, l'ID doit être un nombre entier");
     }
-    else
+    else  //sinon effectuer toute la fonction de modification
     {
         QString nomModif = ui->lineEdit_8->text();
         QString couleursceneModif = ui->lineEdit_11->text();
@@ -232,7 +319,7 @@ void MainWindow::ModifScene()
 
 
 
-        //test si les valeur sont bien rentré
+        //test dans la console si les valeurs sont bien rentré
         /*qDebug() << "Le nom est " << nomModif;
         qDebug() << "La couleur de la scène est " << couleursceneModif;
         qDebug() << "La couleur de la première lumière est " << couleurL1Modif;
@@ -241,25 +328,52 @@ void MainWindow::ModifScene()
 
 
         //modification de la scène
-        qDebug() << "UPDATE SceneTest SET nom = '"+nomModif+"', couleurscene = '"+couleursceneModif+"', L1 = '"+couleurL1Modif+"', L2 = '"+couleurL2Modif+"', L3 = '"+couleurL3Modif+"' WHERE id = "+idModif;
+        //qDebug() << "UPDATE SceneTest SET nom = '"+nomModif+"', couleurscene = '"+couleursceneModif+"', L1 = '"+couleurL1Modif+"', L2 = '"+couleurL2Modif+"', L3 = '"+couleurL3Modif+"' WHERE id = "+idModif;
         QSqlQuery query;
         if(query.exec("UPDATE SceneTest SET nom = '"+nomModif+"', couleurscene = '"+couleursceneModif+"', L1 = '"+couleurL1Modif+"', L2 = '"+couleurL2Modif+"', L3 = '"+couleurL3Modif+"' WHERE id = "+idModif))
         {
-            std::cout << "La scène à bien été modifiée" << std::endl;
-            //ui->label_7->setText("La scène à bien été ajoutée");
+            //std::cout << "La scène à bien été modifiée" << std::endl;
+            ui->label_16->setText("La scène à bien été modifiée");
         }
-        else
+        else //message d'erreur
         {
-            std::cout << "Une erreur s'est produite. La scène n'a pas été modifiée " << std::endl << q2c(query.lastError().text()) << std::endl;
+            ui->label_16->setText("Erreur lors de la modification"
+            "veuillez réessayer");
+            //std::cout << "Une erreur s'est produite. La scène n'a pas été modifiée " << std::endl << q2c(query.lastError().text()) << std::endl;
         }
     }
+}
 
+//bouton suppression de scène----------------------------------------------------------------------------------------------------------------------------------------------------
 void MainWindow::SupprimerScene()
 {
     //Message d'erreur dans le cas ou aucun ID n'est enregistrer
     if (idModif2==0 /*&& std::atoi(idModif) == 0 */)
     {
-            ui->label_9->setText("Vous devez d'abord rentrer l'ID de la scène à supprimer");
+        ui->label_9->setText("Vous devez d'abord rentrer l'ID de la scène à supprimer, l'ID doit être un nombre entier");
+    }
+    else //sinon effectuer toute la fonction de suppresion
+    {
+    //suppression de la scène
+    QSqlQuery query;
+    if(query.exec("DELETE FROM SceneTest WHERE id ="+idModif))
+    {
+        //std::cout << "La scène à bien été supprimer" << std::endl;
+        ui->label_15->setText("La scène à bien été supprimée");
+    }
+    else //pour message d'erreur
+    {
+        ui->label_15->setText("Erreur lors de la suppression, veuillez réessayer");
+        //std::cout << "Une erreur s'est produite. La scène n'a pas été supprimer " << std::endl << q2c(query.lastError().text()) << std::endl;
+    }
     }
 }
+
+//bouton quitter la page-----------------------------------------------------------------------------------------------------------------------------------------------------------
+void MainWindow::Exit()
+{
+    close();
 }
+
+//bouton réinitialiser la page-------------------------------------------------------------------------------------------------------------------------------------------------------
+
