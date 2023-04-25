@@ -1,0 +1,47 @@
+    $oui = new mysqli(SERVEUR, LOGIN, MDP, BDD);
+    // on parcourt la bdd et on range les éventuels login identiques existants dans un tableau
+    $sql = 'SELECT * FROM SceneParUserTest WHERE idUser='.$iduser.';';
+    $resultat = $oui->query($sql);
+	while($data = $resultat->fetch_assoc())
+    {
+        if($nbscene%5==0 AND $nbscene!=0)
+		{	
+			</tr>
+			<tr class="div3">
+			for ($i=1; $i<21; $i++)
+			{
+				$result = 0;
+				for ($j=0; $j<$f; $j++)
+				{
+					if ($i==$data[$j])
+					{
+						<td bdd></td>
+						$result = 1;
+					}
+				}
+				if ($result == 0)
+				{
+					<td vide></td>
+				}
+			}	
+		}
+		else
+		{
+			for ($i=1; $i<21; $i++)
+			{
+				$result = 0;
+				for ($j=0; $j<$f; $j++)
+				{
+					if ($i==$h[$j])
+					{
+						<td bdd></td>
+						$result = 1;
+					}
+				}
+				if ($result == 0)
+				{
+					<td vide></td>
+				}
+			}	
+		}
+	}
