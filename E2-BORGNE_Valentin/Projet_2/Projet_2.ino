@@ -3,6 +3,8 @@ LiquidCrystal lcd = LiquidCrystal(2, 3, 4, 5, 6, 7);
 String val;
 long nbValues;
 long cumulP1;
+bool sendValuePot = false;
+String sentence2, sentence;
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
@@ -20,16 +22,22 @@ void loop() {
   nbValues++;
   if (Serial.available() > 0)
   {
-    lcd.clear();
+    //lcd.clear();
     val = Serial.readString();
+    //lcd.setCursor(0, 0);
+    //lcd.print(val);
     if (val=="1")
     {
-        String sentence = "{\"p1\":";
+      sendValuePot = true;
+    }
+    if (sendValuePot)
+    {
+        sentence = "{\"p1\":";
         sentence += cumulP1 / nbValues;
         sentence += "}";
         Serial.println(sentence);
+        sendValuePot = false;
     }
-    lcd.setCursor(0, 0);
-    lcd.print(val);
+    delay(10);
   }
 }
