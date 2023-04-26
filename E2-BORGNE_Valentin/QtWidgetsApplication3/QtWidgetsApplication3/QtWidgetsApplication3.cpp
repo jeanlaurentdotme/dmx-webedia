@@ -64,14 +64,12 @@ void QtWidgetsApplication3::requete()
 
 void QtWidgetsApplication3::Lirevaleur()
 {
-    for (int i = 0; i <= 20; i++)
-    {
+//    for (int i = 0; i <= 20; i++)
+//    {
         QByteArray data = serialPort->read(serialPort->bytesAvailable());
         QString datastring(data);
         ui.textEdit->insertPlainText(datastring);
-
-        buffer += datastring;
         serialPort->clear();
         serialPort->write("1");
-    }
+//    }
 }
