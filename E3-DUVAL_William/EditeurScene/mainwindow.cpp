@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <iostream>
+#include <string.h>
 #include <qdebug.h>
 #include <QtSql/QtSql>
 #include <QtGui>
@@ -18,6 +19,10 @@
 #include <QApplication>
 #include <QProcess>
 #include <QColorDialog>
+#include <cstring>
+#include <string>
+#include <algorithm>
+#include <QGradient>
 
 
 /*
@@ -26,7 +31,7 @@ QString string = variant.toString();
 //puis en std string
 std::string str = string.toStdString();
 */
-
+using namespace std;
 //on associe q2c à un string.toStdString() pour écrire / tester plus facilement
 #define q2c(string) string.toStdString()
 
@@ -92,7 +97,6 @@ MainWindow::MainWindow(QWidget *parent)
         std::cout << "Une erreur s'est produite. La scène n'a pas été crée " << std::endl << q2c(query.lastError().text()) << std::endl;
     }*/
 
-
     //Modification de scène -----------------------------------------------------------------------------------------------------------------------------------
 
        //modifer scene dans scenetest avec vérification console
@@ -120,18 +124,18 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(ui->pushButton_9, SIGNAL(clicked()), this, SLOT(Color()));
 
     //couleur du fond de la fenetre
-    setStyleSheet("QMainWindow {background-color : lightblue;}");
+    setStyleSheet("QMainWindow {background-color : #338B97;}");      // rouge : DF6139   jaune : #DFA139 bleu : #338B97
 
     //couleur sur les boutons en jaune
-    ui->pushButton->setStyleSheet("QPushButton { background-color : yellow;}");
-    ui->pushButton_2->setStyleSheet("QPushButton { background-color : yellow;}");
-    ui->pushButton_3->setStyleSheet("QPushButton { background-color : yellow;}");
-    ui->pushButton_4->setStyleSheet("QPushButton { background-color : yellow;}");
-    ui->pushButton_5->setStyleSheet("QPushButton { background-color : yellow;}");
-    ui->pushButton_6->setStyleSheet("QPushButton { background-color : yellow;}");
-    ui->pushButton_7->setStyleSheet("QPushButton { background-color : yellow;}");
-    ui->pushButton_8->setStyleSheet("QPushButton { background-color : yellow;}");
-    ui->pushButton_9->setStyleSheet("QPushButton { background-color : yellow;}");
+    ui->pushButton->setStyleSheet("QPushButton { background-color : #DFA139;}");
+    ui->pushButton_2->setStyleSheet("QPushButton { background-color : #DFA139;}");
+    ui->pushButton_3->setStyleSheet("QPushButton { background-color : #DFA139;}");
+    ui->pushButton_4->setStyleSheet("QPushButton { background-color : #DFA139;}");
+    ui->pushButton_5->setStyleSheet("QPushButton { background-color : #DFA139;}");
+    ui->pushButton_6->setStyleSheet("QPushButton { background-color : #DFA139;}");
+    ui->pushButton_7->setStyleSheet("QPushButton { background-color : #DFA139;}");
+    ui->pushButton_8->setStyleSheet("QPushButton { background-color : #DFA139;}");
+    ui->pushButton_9->setStyleSheet("QPushButton { background-color : #DFA139;}");
 
 
 /*    //lorsque appuyer sur bouton modifier scène ---> tous supprimer pour afficher une autre page (test)------------------------------------------------------------
@@ -176,6 +180,7 @@ void MainWindow::SeConnecter()
            //qDebug() << "La connexion a échouée !";
 
        }
+
 }
 
 //bouton créer une scène--------------------------------------------------------------------------------------------------------------------------------------------
@@ -198,17 +203,25 @@ void MainWindow::CreerScene()
     //ajout de la scène
     if(nom != NULL && couleurscene !=NULL && couleurL1 !=NULL && couleurL2 !=NULL && couleurL3 !=NULL) //si toutes les cases on été remplie
     {
-        QSqlQuery query;
-        if(query.exec("INSERT INTO SceneTest(nom,couleurscene,L1,L2,L3) VALUES (' " +nom+" ','"+couleurscene+"','"+couleurL1+"','"+couleurL2+"','"+couleurL3+"')"))
+        if(VerifHexa(couleurscene) == true && VerifHexa(couleurL1) == true && VerifHexa(couleurL2)== true && VerifHexa(couleurL3) == true)
         {
-            //std::cout << "La scène à bien été ajoutée" << std::endl;
-            ui->label_7->setText("            La scène à bien été crée");
-            ui->label_7->setStyleSheet("QLabel {background-color : lightgreen;}");
+            QSqlQuery query;
+            if(query.exec("INSERT INTO SceneTest(nom,couleurscene,L1,L2,L3) VALUES (' " +nom+" ','"+couleurscene+"','"+couleurL1+"','"+couleurL2+"','"+couleurL3+"')"))
+            {
+                //std::cout << "La scène à bien été ajoutée" << std::endl;
+                ui->label_7->setText("            La scène à bien été crée");
+                ui->label_7->setStyleSheet("QLabel {background-color : lightgreen;}");
+            }
+            else // si l'ajout rencontre une erreur
+            {
+                ui->label_7->setText("          Erreur lors de la création");
+                //std::cout << "Une erreur s'est produite. La scène n'a pas été crée " << std::endl << q2c(query.lastError().text()) << std::endl;
+            }
         }
-        else // si l'ajout rencontre une erreur
+        else
         {
-            ui->label_7->setText("          Erreur lors de la création");
-            //std::cout << "Une erreur s'est produite. La scène n'a pas été crée " << std::endl << q2c(query.lastError().text()) << std::endl;
+            ui->label_7->setText("Les couleurs doivent être en hexa");
+            ui->label_7->setStyleSheet("QLabel {background-color : red;}");
         }
     }
     else
@@ -237,7 +250,7 @@ void MainWindow::RentrerIdModifScene()
 {
     //variable de l'id rentré qui va permettre de modifier la scène voulu
     idModif = ui->lineEdit_6->text();
-
+    ui->label_15->setText("");
 
     //ui->label_9->setText("Vous avez sélectionner la scène id = " +idModif);
     //test si l'id rentrer est bien stocker dans idModif
@@ -373,21 +386,44 @@ void MainWindow::ModifScene()
 
 
         //modification de la scène
-        //qDebug() << "UPDATE SceneTest SET nom = '"+nomModif+"', couleurscene = '"+couleursceneModif+"', L1 = '"+couleurL1Modif+"', L2 = '"+couleurL2Modif+"', L3 = '"+couleurL3Modif+"' WHERE id = "+idModif;
-        QSqlQuery query;
-        if(query.exec("UPDATE SceneTest SET nom = '"+nomModif+"', couleurscene = '"+couleursceneModif+"', L1 = '"+couleurL1Modif+"', L2 = '"+couleurL2Modif+"', L3 = '"+couleurL3Modif+"' WHERE id = "+idModif))
+
+        if(nomModif != NULL && couleursceneModif !=NULL && couleurL1Modif !=NULL && couleurL2Modif !=NULL && couleurL3Modif !=NULL) //si toutes les cases ont été remplie
         {
-            //std::cout << "La scène à bien été modifiée" << std::endl;
-            ui->label_16->setText("La scène à bien été modifiée");
+            if(VerifHexa(couleursceneModif) == true && VerifHexa(couleurL1Modif) == true && VerifHexa(couleurL2Modif)== true && VerifHexa(couleurL3Modif) == true)
+            {
+                //qDebug() << "UPDATE SceneTest SET nom = '"+nomModif+"', couleurscene = '"+couleursceneModif+"', L1 = '"+couleurL1Modif+"', L2 = '"+couleurL2Modif+"', L3 = '"+couleurL3Modif+"' WHERE id = "+idModif;
+                QSqlQuery query;
+                if(query.exec("UPDATE SceneTest SET nom = '"+nomModif+"', couleurscene = '"+couleursceneModif+"', L1 = '"+couleurL1Modif+"', L2 = '"+couleurL2Modif+"', L3 = '"+couleurL3Modif+"' WHERE id = "+idModif))
+                {
+                    //std::cout << "La scène à bien été modifiée" << std::endl;
+                    ui->label_16->setText("La scène à bien été modifiée");
+                }
+                else //message d'erreur
+                {
+                    ui->label_16->setText("Erreur lors de la modification"
+                    "veuillez réessayer");
+                    //std::cout << "Une erreur s'est produite. La scène n'a pas été modifiée " << std::endl << q2c(query.lastError().text()) << std::endl;
+                }
+            }
+            else
+            {
+                ui->label_16->setText("Les couleurs doivent être en hexa");
+                ui->label_16->setStyleSheet("QLabel {background-color : red;}");
+            }
         }
-        else //message d'erreur
+        else
         {
-            ui->label_16->setText("Erreur lors de la modification"
-            "veuillez réessayer");
-            //std::cout << "Une erreur s'est produite. La scène n'a pas été modifiée " << std::endl << q2c(query.lastError().text()) << std::endl;
+            ui->label_16->setText("Vous devez remplir tous les champs");
+            ui->label_16->setStyleSheet("QLabel {background-color : red;}");
         }
+
     }
     RentrerIdModifScene(); //rappel de la fonction rentrer ID pour actualiser le texte indiquant le nom, couleur etc de la fonction
+
+    if (idModif2==0 /*&& std::atoi(idModif) == 0 */)
+    {
+            ui->label_9->setText("Vous devez d'abord rentrer l'ID de la scène à modifier, l'ID doit être un nombre entier");
+    }
 }
 
 //bouton suppression de scène----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -436,4 +472,48 @@ void MainWindow::Color()
     color = QColorDialog::getColor(Qt::yellow, this);
     //qDebug() << color.name();
     ui->label_19->setText("Le code hexa de cette couleur est :" +color.name());
+}
+
+
+
+//fonction pour chercher dans les hexa si la valeur est bien verifier-----------------------------------------------------------------------------------------------------------------
+bool MainWindow::ContientHexa(QChar input2)
+{
+    const char* hex_chars = "0123456789abcdefABCDEF"; // creer une chaine contenant les caractere hexa
+    int i = 0;
+    bool ok = false;
+
+    while (ok == false && i < 22) //tant que la condition n'est pas egale et i est plus petit que 22 (21 caractere dans la chaine car majuscule inclus)
+    {
+        if (input2 == hex_chars[i])
+        {
+            ok = true;
+        }
+    i+=1;
+    }
+    return ok;
+}
+
+
+//fonction de véfication si valeurs est en hexa-----------------------------------------------------------------------------------------------------------------------------------
+bool MainWindow::VerifHexa(QString input)
+{
+    int input_length = input.length();
+
+    if (input_length != 7)
+    {
+        return false; // si la chaine de caracteres n a pas exactement 7 caracteres pas hexa
+    }
+
+    if (input[0] != '#')
+    {
+        return false; // si commence pas par # pas hexa
+    }
+    int j = 1; //debut a 1 car si on commence a 0 le # va arreter la condition
+    while ( j <7 && ContientHexa(input[j]))  //tant que i < 7  car 7 caractere -1
+    {
+        j+=1;
+        //qDebug() << j;
+    }
+    return j == 7;
 }

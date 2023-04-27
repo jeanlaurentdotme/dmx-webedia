@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QSqlDatabase>
 #include <QString>
+#include <string>
+#include <string.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -50,5 +52,9 @@ public slots:
     void Exit();
     void Reset();
     void Color();
+    bool VerifHexa(QString input);
+    bool ContientHexa(QChar input2);
 };
 #endif // MAINWINDOW_H
+
+
