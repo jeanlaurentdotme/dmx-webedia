@@ -14,6 +14,10 @@
 #include <QString>
 #include <QTableWidget>
 #include <stdlib.h>
+#include <QDialog>
+#include <QApplication>
+#include <QProcess>
+#include <QColorDialog>
 
 
 /*
@@ -102,6 +106,34 @@ MainWindow::MainWindow(QWidget *parent)
            std::cout << "Une erreur s'est produite. La scène n'a pas été modifiée " << std::endl << q2c(query.lastError().text()) << std::endl;
        }*/
 
+    ui->label->setStyleSheet("QLabel { background-color : red;}"); //mettre le label indiquant que la base de données n'est pas encore connecté en rouge
+
+    //connexion des boutons aux fonctions associée------------------------------------------------------------------------------------------------------------------
+    QObject::connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(SeConnecter()));
+    QObject::connect(ui->pushButton_2, SIGNAL(clicked()), this, SLOT(CreerScene()));
+    QObject::connect(ui->pushButton_3, SIGNAL(clicked()), this, SLOT(AfficherListeScene()));
+    QObject::connect(ui->pushButton_4, SIGNAL(clicked()), this, SLOT(RentrerIdModifScene()));
+    QObject::connect(ui->pushButton_5, SIGNAL(clicked()), this, SLOT(ModifScene()));
+    QObject::connect(ui->pushButton_6, SIGNAL(clicked()), this, SLOT(SupprimerScene()));
+    QObject::connect(ui->pushButton_7, SIGNAL(clicked()), this, SLOT(Exit()));
+    QObject::connect(ui->pushButton_8, SIGNAL(clicked()), this, SLOT(Reset()));
+    QObject::connect(ui->pushButton_9, SIGNAL(clicked()), this, SLOT(Color()));
+
+    //couleur du fond de la fenetre
+    setStyleSheet("QMainWindow {background-color : lightblue;}");
+
+    //couleur sur les boutons en jaune
+    ui->pushButton->setStyleSheet("QPushButton { background-color : yellow;}");
+    ui->pushButton_2->setStyleSheet("QPushButton { background-color : yellow;}");
+    ui->pushButton_3->setStyleSheet("QPushButton { background-color : yellow;}");
+    ui->pushButton_4->setStyleSheet("QPushButton { background-color : yellow;}");
+    ui->pushButton_5->setStyleSheet("QPushButton { background-color : yellow;}");
+    ui->pushButton_6->setStyleSheet("QPushButton { background-color : yellow;}");
+    ui->pushButton_7->setStyleSheet("QPushButton { background-color : yellow;}");
+    ui->pushButton_8->setStyleSheet("QPushButton { background-color : yellow;}");
+    ui->pushButton_9->setStyleSheet("QPushButton { background-color : yellow;}");
+
+
 /*    //lorsque appuyer sur bouton modifier scène ---> tous supprimer pour afficher une autre page (test)------------------------------------------------------------
     QObject::connect(ui->pushButton_3, SIGNAL(clicked()), ui->pushButton, SLOT(hide()));
     QObject::connect(ui->pushButton_3, SIGNAL(clicked()), ui->pushButton_2, SLOT(hide()));
@@ -132,11 +164,15 @@ void MainWindow::SeConnecter()
     if(db.open()) //si la bdd se connecte
        {
            //qDebug() << "Connexion réussie à " << db.hostName();
-           ui->label->setText("Vous vous êtes bien connecté à la BDD");
+           ui->label->setText("               Vous vous êtes bien connecté à la BDD");
+           ui->label->setStyleSheet("QLabel { background-color : lightgreen;}");
+
        }
        else  //si elle ne se connecte pas, message d'erreur
        {
            ui->label->setText("Erreur lors de la connexion, veuillez réessayer");
+           ui->label->setStyleSheet("QLabel { background-color : red; color : blue; }");
+
            //qDebug() << "La connexion a échouée !";
 
        }
@@ -160,16 +196,25 @@ void MainWindow::CreerScene()
     qDebug() << "La couleur de la troisième lumière est " << couleurL3;*/
 
     //ajout de la scène
-    QSqlQuery query;
-    if(query.exec("INSERT INTO SceneTest(nom,couleurscene,L1,L2,L3) VALUES (' " +nom+" ','"+couleurscene+"','"+couleurL1+"','"+couleurL2+"','"+couleurL3+"')"))
+    if(nom != NULL && couleurscene !=NULL && couleurL1 !=NULL && couleurL2 !=NULL && couleurL3 !=NULL) //si toutes les cases on été remplie
     {
-        //std::cout << "La scène à bien été ajoutée" << std::endl;
-        ui->label_7->setText("La scène à bien été crée");
+        QSqlQuery query;
+        if(query.exec("INSERT INTO SceneTest(nom,couleurscene,L1,L2,L3) VALUES (' " +nom+" ','"+couleurscene+"','"+couleurL1+"','"+couleurL2+"','"+couleurL3+"')"))
+        {
+            //std::cout << "La scène à bien été ajoutée" << std::endl;
+            ui->label_7->setText("            La scène à bien été crée");
+            ui->label_7->setStyleSheet("QLabel {background-color : lightgreen;}");
+        }
+        else // si l'ajout rencontre une erreur
+        {
+            ui->label_7->setText("          Erreur lors de la création");
+            //std::cout << "Une erreur s'est produite. La scène n'a pas été crée " << std::endl << q2c(query.lastError().text()) << std::endl;
+        }
     }
-    else // si l'ajout rencontre une erreur
+    else
     {
-        ui->label_7->setText("Erreur lors de la création");
-        //std::cout << "Une erreur s'est produite. La scène n'a pas été crée " << std::endl << q2c(query.lastError().text()) << std::endl;
+        ui->label_7->setText("Vous devez remplir tous les champs");
+        ui->label_7->setStyleSheet("QLabel {background-color : red;}");
     }
 }
 
@@ -279,7 +324,7 @@ void MainWindow::RentrerIdModifScene()
         }
 
 
-        ui->label_17->setText("La scène sélectionner est donc : id = "+idModif+ ", nom = " +nomSelec+ ", couleur = " +couleurSceneSelec);
+        ui->label_17->setText("La scène sélectionner est donc : id = "+idModif+ ", Nom = " +nomSelec+ ", Couleur = " +couleurSceneSelec);
         ui->label_18->setText( "Lumière 1 = " +couleurL1Selec+ ", Lumière 2 = " +couleurL2Selec+ ", Lumière 3 = " +couleurL3Selec);
     }
     else
@@ -342,6 +387,7 @@ void MainWindow::ModifScene()
             //std::cout << "Une erreur s'est produite. La scène n'a pas été modifiée " << std::endl << q2c(query.lastError().text()) << std::endl;
         }
     }
+    RentrerIdModifScene(); //rappel de la fonction rentrer ID pour actualiser le texte indiquant le nom, couleur etc de la fonction
 }
 
 //bouton suppression de scène----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -360,6 +406,8 @@ void MainWindow::SupprimerScene()
     {
         //std::cout << "La scène à bien été supprimer" << std::endl;
         ui->label_15->setText("La scène à bien été supprimée");
+        ui->label_17->setText(""); //enlever le texte indiquant la scène qui vient d'être supprimer
+        ui->label_18->setText("");
     }
     else //pour message d'erreur
     {
@@ -376,4 +424,16 @@ void MainWindow::Exit()
 }
 
 //bouton réinitialiser la page-------------------------------------------------------------------------------------------------------------------------------------------------------
+void MainWindow::Reset()
+{
+    qApp->quit();  //quitte l'application
+    QProcess::startDetached(qApp->arguments()[0], qApp->arguments()); //relance l'application
+}
 
+//bouton pour afficher le dialogue de couleur----------------------------------------------------------------------------------------------------------------------------------------
+void MainWindow::Color()
+{
+    color = QColorDialog::getColor(Qt::yellow, this);
+    //qDebug() << color.name();
+    ui->label_19->setText("Le code hexa de cette couleur est :" +color.name());
+}

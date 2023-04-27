@@ -33,14 +33,14 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>300</x>
+      <x>250</x>
       <y>60</y>
-      <width>351</width>
+      <width>401</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>Vous n'etes pas encore connectés à la BDD</string>
+     <string>               Vous n'etes pas encore connectés à la BDD</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_2">
@@ -174,9 +174,9 @@
    <widget class="QLabel" name="label_7">
     <property name="geometry">
      <rect>
-      <x>731</x>
+      <x>680</x>
       <y>180</y>
-      <width>181</width>
+      <width>271</width>
       <height>20</height>
      </rect>
     </property>
@@ -187,7 +187,7 @@
    <widget class="QPushButton" name="pushButton_3">
     <property name="geometry">
      <rect>
-      <x>270</x>
+      <x>50</x>
       <y>250</y>
       <width>351</width>
       <height>41</height>
@@ -390,8 +390,8 @@
    <widget class="QLabel" name="label_15">
     <property name="geometry">
      <rect>
-      <x>550</x>
-      <y>530</y>
+      <x>350</x>
+      <y>570</y>
       <width>381</width>
       <height>17</height>
      </rect>
@@ -405,7 +405,7 @@
      <rect>
       <x>720</x>
       <y>500</y>
-      <width>181</width>
+      <width>191</width>
       <height>41</height>
      </rect>
     </property>
@@ -465,6 +465,32 @@
      <string>Réinitialiser</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton_9">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>250</y>
+      <width>351</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Voir la liste des couleurs + code hexa</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_19">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>300</y>
+      <width>301</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -479,120 +505,7 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>SeConnecter()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>445</x>
-     <y>52</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>464</x>
-     <y>331</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_2</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>CreerScene()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>820</x>
-     <y>172</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>464</x>
-     <y>331</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_3</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>AfficherListeScene()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>445</x>
-     <y>312</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>464</x>
-     <y>331</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_4</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>RentrerIdModifScene()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>625</x>
-     <y>381</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>464</x>
-     <y>331</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_5</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>ModifScene()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>810</x>
-     <y>492</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>464</x>
-     <y>331</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_6</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>SupprimerScene()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>460</x>
-     <y>562</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>464</x>
-     <y>331</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_7</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>Exit()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>840</x>
-     <y>52</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>464</x>
-     <y>331</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>SeConnecter()</slot>
   <slot>CreerScene()</slot>

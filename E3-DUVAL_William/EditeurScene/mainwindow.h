@@ -9,6 +9,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -36,6 +37,7 @@ private:
     QString couleurL1Selec;
     QString couleurL2Selec;
     QString couleurL3Selec;
+    QColor color;
     int idModif2;
 
 public slots:
@@ -47,5 +49,6 @@ public slots:
     void SupprimerScene();
     void Exit();
     void Reset();
+    void Color();
 };
 #endif // MAINWINDOW_H
