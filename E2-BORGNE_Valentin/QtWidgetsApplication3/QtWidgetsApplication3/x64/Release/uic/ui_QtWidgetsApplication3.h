@@ -58,13 +58,13 @@ public:
         verticalSlider->setOrientation(Qt::Vertical);
         textEdit = new QTextEdit(centralWidget);
         textEdit->setObjectName(QString::fromUtf8("textEdit"));
-        textEdit->setGeometry(QRect(320, 150, 201, 81));
+        textEdit->setGeometry(QRect(320, 30, 201, 281));
         pushButton = new QPushButton(centralWidget);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(380, 90, 75, 23));
+        pushButton->setGeometry(QRect(380, 0, 75, 23));
         pushButton_2 = new QPushButton(centralWidget);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-        pushButton_2->setGeometry(QRect(390, 260, 75, 23));
+        pushButton_2->setGeometry(QRect(380, 320, 75, 23));
         QtWidgetsApplication3Class->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(QtWidgetsApplication3Class);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
