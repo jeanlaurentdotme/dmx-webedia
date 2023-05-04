@@ -10,6 +10,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QLineEdit>
 #include <qlineedit.h>
+#include <QTextEdit>
 #include <QList>
 #include <QMessageBox>
 #include <QString>
@@ -122,6 +123,10 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(ui->pushButton_7, SIGNAL(clicked()), this, SLOT(Exit()));
     QObject::connect(ui->pushButton_8, SIGNAL(clicked()), this, SLOT(Reset()));
     QObject::connect(ui->pushButton_9, SIGNAL(clicked()), this, SLOT(Color()));
+    QObject::connect(ui->pushButton_10, SIGNAL(clicked()), this, SLOT(SelecCouleurScene()));
+    QObject::connect(ui->pushButton_11, SIGNAL(clicked()), this, SLOT(SelecCouleurL1()));
+    QObject::connect(ui->pushButton_12, SIGNAL(clicked()), this, SLOT(SelecCouleurL2()));
+    QObject::connect(ui->pushButton_13, SIGNAL(clicked()), this, SLOT(SelecCouleurL3()));
 
     //couleur du fond de la fenetre
     setStyleSheet("QMainWindow {background-color : #338B97;}");      // rouge : DF6139   jaune : #DFA139 bleu : #338B97
@@ -136,6 +141,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pushButton_7->setStyleSheet("QPushButton { background-color : #DFA139;}");
     ui->pushButton_8->setStyleSheet("QPushButton { background-color : #DFA139;}");
     ui->pushButton_9->setStyleSheet("QPushButton { background-color : #DFA139;}");
+    ui->pushButton_10->setStyleSheet("QPushButton { background-color : #DFA139;}");
+    ui->pushButton_11->setStyleSheet("QPushButton { background-color : #DFA139;}");
+    ui->pushButton_12->setStyleSheet("QPushButton { background-color : #DFA139;}");
+    ui->pushButton_13->setStyleSheet("QPushButton { background-color : #DFA139;}");
 
 
 /*    //lorsque appuyer sur bouton modifier scène ---> tous supprimer pour afficher une autre page (test)------------------------------------------------------------
@@ -165,6 +174,7 @@ MainWindow::~MainWindow()
 //bouton se connecter à la BDD relié à QT-----------------------------------------------------------------------------------------------------------------------
 void MainWindow::SeConnecter()
 {
+    ResetColor();
     if(db.open()) //si la bdd se connecte
        {
            //qDebug() << "Connexion réussie à " << db.hostName();
@@ -186,6 +196,8 @@ void MainWindow::SeConnecter()
 //bouton créer une scène--------------------------------------------------------------------------------------------------------------------------------------------
 void MainWindow::CreerScene()
 {
+    ResetColor();
+
     //initialisation des variables reliés au champ de texte à entrer pour pouvoir ajouter les nom et couleur de scène souhaiter par l'utilisateur
     QString nom = ui->lineEdit->text();
     QString couleurscene = ui->lineEdit_2->text();
@@ -220,13 +232,13 @@ void MainWindow::CreerScene()
         }
         else
         {
-            ui->label_7->setText("Les couleurs doivent être en hexa");
+            ui->label_7->setText("  Les couleurs doivent être en hexa");
             ui->label_7->setStyleSheet("QLabel {background-color : red;}");
         }
     }
     else
     {
-        ui->label_7->setText("Vous devez remplir tous les champs");
+        ui->label_7->setText("  Vous devez remplir tous les champs");
         ui->label_7->setStyleSheet("QLabel {background-color : red;}");
     }
 }
@@ -248,6 +260,7 @@ void MainWindow::AfficherListeScene()
 //bouton rentrer l'id de la scène que l'on souhaite modifier---------------------------------------------------------------------------------------------------------------
 void MainWindow::RentrerIdModifScene()
 {
+    ResetColor();
     //variable de l'id rentré qui va permettre de modifier la scène voulu
     idModif = ui->lineEdit_6->text();
     ui->label_15->setText("");
@@ -336,13 +349,23 @@ void MainWindow::RentrerIdModifScene()
             }
         }
 
-
+       /*
         ui->label_17->setText("La scène sélectionner est donc : id = "+idModif+ ", Nom = " +nomSelec+ ", Couleur = " +couleurSceneSelec);
         ui->label_18->setText( "Lumière 1 = " +couleurL1Selec+ ", Lumière 2 = " +couleurL2Selec+ ", Lumière 3 = " +couleurL3Selec);
+        */
+
+        //Pre rempli les line edit des valeurs actuelle de la BDD
+        ui->lineEdit_7->setText(nomSelec);
+        ui->lineEdit_8->setText(couleurSceneSelec);
+        ui->lineEdit_9->setText(couleurL1Selec);
+        ui->lineEdit_10->setText(couleurL2Selec);
+        ui->lineEdit_11->setText(couleurL3Selec);
+
+
     }
     else
     {
-         ui->label_9->setText("Vous devez rentrer un ID qui est un nombre entier non nul");
+         ui->label_9->setText("       Vous devez rentrer un ID qui est un nombre entier non nul");
     }
 
     //qDebug() << "L'id choisi est " << idModif2;
@@ -361,6 +384,8 @@ void MainWindow::RentrerIdModifScene()
 //bouton modifier la scène en fonction de l'id choisi----------------------------------------------------------------------------------------------------------------------
 void MainWindow::ModifScene()
 {
+    ResetColor();
+
     //qDebug() << idModif2;
     //Message d'erreur dans le cas ou aucun ID n'est enregistrer
     if (idModif2==0 /*&& std::atoi(idModif) == 0 */)
@@ -369,11 +394,11 @@ void MainWindow::ModifScene()
     }
     else  //sinon effectuer toute la fonction de modification
     {
-        QString nomModif = ui->lineEdit_8->text();
-        QString couleursceneModif = ui->lineEdit_11->text();
-        QString couleurL1Modif = ui->lineEdit_7->text();
+        QString nomModif = ui->lineEdit_7->text();
+        QString couleursceneModif = ui->lineEdit_8->text();
+        QString couleurL1Modif = ui->lineEdit_9->text();
         QString couleurL2Modif = ui->lineEdit_10->text();
-        QString couleurL3Modif = ui->lineEdit_9->text();
+        QString couleurL3Modif = ui->lineEdit_11->text();
 
 
 
@@ -396,7 +421,8 @@ void MainWindow::ModifScene()
                 if(query.exec("UPDATE SceneTest SET nom = '"+nomModif+"', couleurscene = '"+couleursceneModif+"', L1 = '"+couleurL1Modif+"', L2 = '"+couleurL2Modif+"', L3 = '"+couleurL3Modif+"' WHERE id = "+idModif))
                 {
                     //std::cout << "La scène à bien été modifiée" << std::endl;
-                    ui->label_16->setText("La scène à bien été modifiée");
+                    ui->label_16->setText("      La scène à bien été modifiée");
+                    ui->label_16->setStyleSheet("QLabel {background-color : lightgreen;}");
                 }
                 else //message d'erreur
                 {
@@ -429,6 +455,8 @@ void MainWindow::ModifScene()
 //bouton suppression de scène----------------------------------------------------------------------------------------------------------------------------------------------------
 void MainWindow::SupprimerScene()
 {
+    ResetColor();
+
     //Message d'erreur dans le cas ou aucun ID n'est enregistrer
     if (idModif2==0 /*&& std::atoi(idModif) == 0 */)
     {
@@ -442,12 +470,16 @@ void MainWindow::SupprimerScene()
     {
         //std::cout << "La scène à bien été supprimer" << std::endl;
         ui->label_15->setText("La scène à bien été supprimée");
+        ui->label_15->setStyleSheet("QLabel {background-color : lightgreen;}");
+        /*
         ui->label_17->setText(""); //enlever le texte indiquant la scène qui vient d'être supprimer
         ui->label_18->setText("");
+        */
     }
     else //pour message d'erreur
     {
         ui->label_15->setText("Erreur lors de la suppression, veuillez réessayer");
+        ui->label_15->setStyleSheet("QLabel {background-color : red;}");
         //std::cout << "Une erreur s'est produite. La scène n'a pas été supprimer " << std::endl << q2c(query.lastError().text()) << std::endl;
     }
     }
@@ -476,7 +508,7 @@ void MainWindow::Color()
 
 
 
-//fonction pour chercher dans les hexa si la valeur est bien verifier-----------------------------------------------------------------------------------------------------------------
+//fonction pour chercher si la valeur entrer est bien hexadecimal-----------------------------------------------------------------------------------------------------------------
 bool MainWindow::ContientHexa(QChar input2)
 {
     const char* hex_chars = "0123456789abcdefABCDEF"; // creer une chaine contenant les caractere hexa
@@ -495,7 +527,7 @@ bool MainWindow::ContientHexa(QChar input2)
 }
 
 
-//fonction de véfication si valeurs est en hexa-----------------------------------------------------------------------------------------------------------------------------------
+//fonction de verification si valeurs est en hexa-----------------------------------------------------------------------------------------------------------------------------------
 bool MainWindow::VerifHexa(QString input)
 {
     int input_length = input.length();
@@ -516,4 +548,54 @@ bool MainWindow::VerifHexa(QString input)
         //qDebug() << j;
     }
     return j == 7;
+}
+
+
+//fonction pour les bouton de selection de la couleur souhaiter-----------------------------------------------------------------------------------------------------------------------
+QColor MainWindow::SelecColor()
+{
+    color2 = QColorDialog::getColor(Qt::yellow, this);
+    return color2;
+}
+
+//boutons pour selectionner les couleurs qui vont se mettre directement dans les lineEdit-----------------------------------------------------------------------------------------------------
+
+//bouton couleur scene
+void MainWindow::SelecCouleurScene()
+{
+    SelecColor();
+    ui->lineEdit_2->setText(color2.name());
+}
+
+//bouton couleur L1
+void MainWindow::SelecCouleurL1()
+{
+    SelecColor();
+    ui->lineEdit_3->setText(color2.name());
+}
+
+//bouton couleur L2
+void MainWindow::SelecCouleurL2()
+{
+    SelecColor();
+    ui->lineEdit_4->setText(color2.name());
+}
+
+//bouton couleur L3
+void MainWindow::SelecCouleurL3()
+{
+    SelecColor();
+    ui->lineEdit_5->setText(color2.name());
+}
+
+
+//fonction réinitialiser les couleur de fond (surtout les texte d erreur/reussite en rouge et vert)----------------------------------------------------------------------------------------------
+void MainWindow::ResetColor()
+{
+    ui->label_7->setText("");
+    ui->label_7->setStyleSheet("QLabel {background-color : #338B97;}");
+    ui->label_16->setText("");
+    ui->label_16->setStyleSheet("QLabel {background-color : #338B97;}");
+    ui->label_18->setText("");
+    ui->label_18->setStyleSheet("QLabel {background-color : #338B97;}");
 }

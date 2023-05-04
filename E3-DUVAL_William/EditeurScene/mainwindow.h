@@ -40,6 +40,7 @@ private:
     QString couleurL2Selec;
     QString couleurL3Selec;
     QColor color;
+    QColor color2;
     int idModif2;
 
 public slots:
@@ -54,6 +55,12 @@ public slots:
     void Color();
     bool VerifHexa(QString input);
     bool ContientHexa(QChar input2);
+    QColor SelecColor();
+    void SelecCouleurScene();
+    void SelecCouleurL1();
+    void SelecCouleurL2();
+    void SelecCouleurL3();
+    void ResetColor();
 };
 #endif // MAINWINDOW_H
 

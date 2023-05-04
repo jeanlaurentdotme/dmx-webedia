@@ -40,7 +40,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>               Vous n'etes pas encore connectés à la BDD</string>
+     <string>               Vous n'etes pas encore connecté à la BDD</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_2">
@@ -154,7 +154,7 @@
    <widget class="QLineEdit" name="lineEdit_4">
     <property name="geometry">
      <rect>
-      <x>430</x>
+      <x>435</x>
       <y>140</y>
       <width>113</width>
       <height>25</height>
@@ -249,7 +249,7 @@
    <widget class="QLineEdit" name="lineEdit_7">
     <property name="geometry">
      <rect>
-      <x>310</x>
+      <x>50</x>
       <y>460</y>
       <width>113</width>
       <height>25</height>
@@ -259,7 +259,7 @@
    <widget class="QLineEdit" name="lineEdit_8">
     <property name="geometry">
      <rect>
-      <x>50</x>
+      <x>180</x>
       <y>460</y>
       <width>113</width>
       <height>25</height>
@@ -282,7 +282,7 @@
    <widget class="QLineEdit" name="lineEdit_9">
     <property name="geometry">
      <rect>
-      <x>570</x>
+      <x>310</x>
       <y>460</y>
       <width>113</width>
       <height>25</height>
@@ -305,7 +305,7 @@
    <widget class="QLineEdit" name="lineEdit_10">
     <property name="geometry">
      <rect>
-      <x>430</x>
+      <x>440</x>
       <y>460</y>
       <width>113</width>
       <height>25</height>
@@ -354,7 +354,7 @@
    <widget class="QLineEdit" name="lineEdit_11">
     <property name="geometry">
      <rect>
-      <x>180</x>
+      <x>570</x>
       <y>460</y>
       <width>113</width>
       <height>25</height>
@@ -489,6 +489,58 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_10">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>170</y>
+      <width>113</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Sélectionner</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_11">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>170</y>
+      <width>113</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Sélectionner</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_12">
+    <property name="geometry">
+     <rect>
+      <x>435</x>
+      <y>170</y>
+      <width>113</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Sélectionner</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_13">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>170</y>
+      <width>113</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Sélectionner</string>
     </property>
    </widget>
   </widget>
