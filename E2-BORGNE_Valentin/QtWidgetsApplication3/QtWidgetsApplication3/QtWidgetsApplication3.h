@@ -24,6 +24,7 @@ public slots:
     void potValuesCheckBoxChecked(int state);
     //void sendCheckboxData();
     void requete();
-    void Lirevaleur();
     void onReadyRead();
+    void sendText();
+    void buttonClicked();
 };

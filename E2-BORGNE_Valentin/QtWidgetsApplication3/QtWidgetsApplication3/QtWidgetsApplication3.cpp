@@ -27,6 +27,7 @@ QtWidgetsApplication3::QtWidgetsApplication3(QWidget *parent)
     if (serialPort->open(QIODevice::ReadWrite)) {
         // Le port série est ouvert avec succès
         ui.label->setText("Ouvert");
+        QObject::connect(serialPort, &QSerialPort::readyRead, this, &QtWidgetsApplication3::buttonClicked);
     }
     else {
         // Échec de l'ouverture du port série
@@ -50,13 +51,15 @@ void QtWidgetsApplication3::potValuesCheckBoxChecked(int state)
 {
     if (state ==Qt::Checked)
     {
+        QObject::disconnect(serialPort, &QSerialPort::readyRead, this, &QtWidgetsApplication3::buttonClicked);
         QObject::connect(&timer, &QTimer::timeout, this, &QtWidgetsApplication3::requete);
-        timer.start(2000);
+        timer.start(15);
     }
     else
     {
         timer.stop();
         QObject::disconnect(&timer, &QTimer::timeout, this, &QtWidgetsApplication3::requete);
+        QObject::connect(serialPort, &QSerialPort::readyRead, this, &QtWidgetsApplication3::buttonClicked);
     }
 }
 
@@ -66,40 +69,41 @@ void QtWidgetsApplication3::requete()
     QObject::connect(serialPort, &QSerialPort::readyRead, this, &QtWidgetsApplication3::onReadyRead);
 }
 
-void QtWidgetsApplication3::Lirevaleur()
+void QtWidgetsApplication3::onReadyRead()
 {
+
     QByteArray data = serialPort->read(serialPort->bytesAvailable());
     QString datastring(data);
     ui.textEdit->insertPlainText(datastring);
-    serialPort->clear();
-    serialPort->write("1");
+    buffer += datastring;
+    if (buffer.endsWith("}"))
+    {
+        int idx = buffer.lastIndexOf("{");
+        buffer.remove(0, idx);
+        QJsonDocument jsonData = QJsonDocument::fromJson(buffer.toUtf8());
+        QJsonObject json = jsonData.object();
+        if (json.contains("p1"))
+        {
+            QJsonValue p1Obj = json.value("p1");
+            int val = p1Obj.toInt(-1);
+            if (val >= 0)
+            {
+                QByteArray hexVal = QByteArray::number(val, 16);
+                ui.textEdit->insertPlainText(hexVal);
+                ui.verticalSlider->setValue(val);
+                potentiometre1 = val;
+            }
+        }
+        buffer = "";
+    }
 }
 
-void QtWidgetsApplication3::onReadyRead()
+void QtWidgetsApplication3::sendText()
 {
-    if (serialPort->waitForReadyRead(100))
-    {
-        QByteArray data = serialPort->read(serialPort->bytesAvailable());
-        QString datastring(data);
-        ui.textEdit->insertPlainText(datastring);
-        buffer += datastring;
-        if (buffer.endsWith("}"))
-        {
-            int idx = buffer.lastIndexOf("{");
-            buffer.remove(0, idx);
-            QJsonDocument jsonData = QJsonDocument::fromJson(buffer.toUtf8());
-            QJsonObject json = jsonData.object();
-            if (json.contains("p1"))
-            {
-                QJsonValue p1Obj = json.value("p1");
-                int val = p1Obj.toInt();
-                if (val >= 0)
-                {
-                    ui.verticalSlider->setValue(val);
+    serialPort->write(ui.lineEdit->text().toStdString().c_str());
+}
 
-                }
-            }
-            buffer = "";
-        }
-    }
+void QtWidgetsApplication3::buttonClicked()
+{
+    ui.label_2->setText("bouton cliqué");
 }

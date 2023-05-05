@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>601</width>
-    <height>400</height>
+    <width>670</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,7 +50,7 @@
      </rect>
     </property>
     <property name="maximum">
-     <number>1024</number>
+     <number>255</number>
     </property>
     <property name="orientation">
      <enum>Qt::Vertical</enum>
@@ -92,13 +92,72 @@
      <string>Lire</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton_3">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>380</y>
+      <width>75</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Envoyer</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>380</y>
+      <width>301</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>30</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="test">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>250</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Test</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_2">
+    <property name="geometry">
+     <rect>
+      <x>510</x>
+      <y>380</y>
+      <width>113</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>601</width>
+     <width>670</width>
      <height>21</height>
     </rect>
    </property>
@@ -122,7 +181,7 @@
    <sender>pushButton</sender>
    <signal>clicked()</signal>
    <receiver>QtWidgetsApplication3Class</receiver>
-   <slot>requete()</slot>
+   <slot>buttonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>417</x>
@@ -135,18 +194,34 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_2</sender>
+   <sender>pushButton_3</sender>
    <signal>clicked()</signal>
    <receiver>QtWidgetsApplication3Class</receiver>
-   <slot>Lirevaleur()</slot>
+   <slot>sendText()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>427</x>
-     <y>304</y>
+     <x>357</x>
+     <y>428</y>
     </hint>
     <hint type="destinationlabel">
-     <x>300</x>
-     <y>199</y>
+     <x>334</x>
+     <y>239</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>test</sender>
+   <signal>clicked()</signal>
+   <receiver>QtWidgetsApplication3Class</receiver>
+   <slot>test()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>597</x>
+     <y>294</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>334</x>
+     <y>239</y>
     </hint>
    </hints>
   </connection>
@@ -154,6 +229,8 @@
  <slots>
   <slot>potValuesCheckBoxChecked()</slot>
   <slot>requete()</slot>
-  <slot>Lirevaleur()</slot>
+  <slot>sendText()</slot>
+  <slot>buttonClicked()</slot>
+  <slot>test()</slot>
  </slots>
 </ui>

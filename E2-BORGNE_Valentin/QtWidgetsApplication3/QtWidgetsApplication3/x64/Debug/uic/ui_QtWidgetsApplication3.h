@@ -13,6 +13,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
@@ -34,6 +35,10 @@ public:
     QTextEdit *textEdit;
     QPushButton *pushButton;
     QPushButton *pushButton_2;
+    QPushButton *pushButton_3;
+    QLineEdit *lineEdit;
+    QLabel *label_2;
+    QPushButton *test;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -42,7 +47,7 @@ public:
     {
         if (QtWidgetsApplication3Class->objectName().isEmpty())
             QtWidgetsApplication3Class->setObjectName(QString::fromUtf8("QtWidgetsApplication3Class"));
-        QtWidgetsApplication3Class->resize(601, 400);
+        QtWidgetsApplication3Class->resize(670, 480);
         centralWidget = new QWidget(QtWidgetsApplication3Class);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         label = new QLabel(centralWidget);
@@ -54,7 +59,7 @@ public:
         verticalSlider = new QSlider(centralWidget);
         verticalSlider->setObjectName(QString::fromUtf8("verticalSlider"));
         verticalSlider->setGeometry(QRect(150, 90, 22, 160));
-        verticalSlider->setMaximum(1024);
+        verticalSlider->setMaximum(255);
         verticalSlider->setOrientation(Qt::Vertical);
         textEdit = new QTextEdit(centralWidget);
         textEdit->setObjectName(QString::fromUtf8("textEdit"));
@@ -65,10 +70,22 @@ public:
         pushButton_2 = new QPushButton(centralWidget);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
         pushButton_2->setGeometry(QRect(380, 320, 75, 23));
+        pushButton_3 = new QPushButton(centralWidget);
+        pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
+        pushButton_3->setGeometry(QRect(320, 380, 75, 31));
+        lineEdit = new QLineEdit(centralWidget);
+        lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
+        lineEdit->setGeometry(QRect(10, 380, 301, 31));
+        label_2 = new QLabel(centralWidget);
+        label_2->setObjectName(QString::fromUtf8("label_2"));
+        label_2->setGeometry(QRect(560, 30, 91, 20));
+        test = new QPushButton(centralWidget);
+        test->setObjectName(QString::fromUtf8("test"));
+        test->setGeometry(QRect(560, 250, 75, 23));
         QtWidgetsApplication3Class->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(QtWidgetsApplication3Class);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 601, 21));
+        menuBar->setGeometry(QRect(0, 0, 670, 21));
         QtWidgetsApplication3Class->setMenuBar(menuBar);
         mainToolBar = new QToolBar(QtWidgetsApplication3Class);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -78,8 +95,9 @@ public:
         QtWidgetsApplication3Class->setStatusBar(statusBar);
 
         retranslateUi(QtWidgetsApplication3Class);
-        QObject::connect(pushButton, SIGNAL(clicked()), QtWidgetsApplication3Class, SLOT(requete()));
-        QObject::connect(pushButton_2, SIGNAL(clicked()), QtWidgetsApplication3Class, SLOT(Lirevaleur()));
+        QObject::connect(pushButton, SIGNAL(clicked()), QtWidgetsApplication3Class, SLOT(buttonClicked()));
+        QObject::connect(pushButton_3, SIGNAL(clicked()), QtWidgetsApplication3Class, SLOT(sendText()));
+        QObject::connect(test, SIGNAL(clicked()), QtWidgetsApplication3Class, SLOT(test()));
 
         QMetaObject::connectSlotsByName(QtWidgetsApplication3Class);
     } // setupUi
@@ -91,6 +109,9 @@ public:
         checkBox->setText(QCoreApplication::translate("QtWidgetsApplication3Class", "CheckBox", nullptr));
         pushButton->setText(QCoreApplication::translate("QtWidgetsApplication3Class", "fdgbhb", nullptr));
         pushButton_2->setText(QCoreApplication::translate("QtWidgetsApplication3Class", "Lire", nullptr));
+        pushButton_3->setText(QCoreApplication::translate("QtWidgetsApplication3Class", "Envoyer", nullptr));
+        label_2->setText(QCoreApplication::translate("QtWidgetsApplication3Class", "TextLabel", nullptr));
+        test->setText(QCoreApplication::translate("QtWidgetsApplication3Class", "Test", nullptr));
     } // retranslateUi
 
 };
