@@ -60,6 +60,10 @@ public slots:
     void SelecCouleurL1();
     void SelecCouleurL2();
     void SelecCouleurL3();
+    void SelecCouleurSceneModif();
+    void SelecCouleurL1Modif();
+    void SelecCouleurL2Modif();
+    void SelecCouleurL3Modif();
     void ResetColor();
 };
 #endif // MAINWINDOW_H

@@ -127,6 +127,10 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(ui->pushButton_11, SIGNAL(clicked()), this, SLOT(SelecCouleurL1()));
     QObject::connect(ui->pushButton_12, SIGNAL(clicked()), this, SLOT(SelecCouleurL2()));
     QObject::connect(ui->pushButton_13, SIGNAL(clicked()), this, SLOT(SelecCouleurL3()));
+    QObject::connect(ui->pushButton_14, SIGNAL(clicked()), this, SLOT(SelecCouleurSceneModif()));
+    QObject::connect(ui->pushButton_15, SIGNAL(clicked()), this, SLOT(SelecCouleurL1Modif()));
+    QObject::connect(ui->pushButton_16, SIGNAL(clicked()), this, SLOT(SelecCouleurL2Modif()));
+    QObject::connect(ui->pushButton_17, SIGNAL(clicked()), this, SLOT(SelecCouleurL3Modif()));
 
     //couleur du fond de la fenetre
     setStyleSheet("QMainWindow {background-color : #338B97;}");      // rouge : DF6139   jaune : #DFA139 bleu : #338B97
@@ -145,6 +149,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pushButton_11->setStyleSheet("QPushButton { background-color : #DFA139;}");
     ui->pushButton_12->setStyleSheet("QPushButton { background-color : #DFA139;}");
     ui->pushButton_13->setStyleSheet("QPushButton { background-color : #DFA139;}");
+    ui->pushButton_14->setStyleSheet("QPushButton { background-color : #DFA139;}");
+    ui->pushButton_15->setStyleSheet("QPushButton { background-color : #DFA139;}");
+    ui->pushButton_16->setStyleSheet("QPushButton { background-color : #DFA139;}");
+    ui->pushButton_17->setStyleSheet("QPushButton { background-color : #DFA139;}");
 
 
 /*    //lorsque appuyer sur bouton modifier scène ---> tous supprimer pour afficher une autre page (test)------------------------------------------------------------
@@ -483,6 +491,7 @@ void MainWindow::SupprimerScene()
         //std::cout << "Une erreur s'est produite. La scène n'a pas été supprimer " << std::endl << q2c(query.lastError().text()) << std::endl;
     }
     }
+
 }
 
 //bouton quitter la page-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -560,40 +569,69 @@ QColor MainWindow::SelecColor()
 
 //boutons pour selectionner les couleurs qui vont se mettre directement dans les lineEdit-----------------------------------------------------------------------------------------------------
 
-//bouton couleur scene
+//bouton couleur scene creer
 void MainWindow::SelecCouleurScene()
 {
     SelecColor();
     ui->lineEdit_2->setText(color2.name());
 }
 
-//bouton couleur L1
+//bouton couleur L1 creer
 void MainWindow::SelecCouleurL1()
 {
     SelecColor();
     ui->lineEdit_3->setText(color2.name());
 }
 
-//bouton couleur L2
+//bouton couleur L2 creer
 void MainWindow::SelecCouleurL2()
 {
     SelecColor();
     ui->lineEdit_4->setText(color2.name());
 }
 
-//bouton couleur L3
+//bouton couleur L3 creer
 void MainWindow::SelecCouleurL3()
 {
     SelecColor();
     ui->lineEdit_5->setText(color2.name());
 }
 
+//bouton couleur scene modif
+void MainWindow::SelecCouleurSceneModif()
+{
+    SelecColor();
+    ui->lineEdit_8->setText(color2.name());
+}
+
+//bouton couleur scene modif
+void MainWindow::SelecCouleurL1Modif()
+{
+    SelecColor();
+    ui->lineEdit_9->setText(color2.name());
+}
+
+//bouton couleur scene modif
+void MainWindow::SelecCouleurL2Modif()
+{
+    SelecColor();
+    ui->lineEdit_10->setText(color2.name());
+}
+
+//bouton couleur scene modif
+void MainWindow::SelecCouleurL3Modif()
+{
+    SelecColor();
+    ui->lineEdit_11->setText(color2.name());
+}
 
 //fonction réinitialiser les couleur de fond (surtout les texte d erreur/reussite en rouge et vert)----------------------------------------------------------------------------------------------
 void MainWindow::ResetColor()
 {
     ui->label_7->setText("");
     ui->label_7->setStyleSheet("QLabel {background-color : #338B97;}");
+    ui->label_15->setText("");
+    ui->label_15->setStyleSheet("QLabel {background-color : #338B97;}");
     ui->label_16->setText("");
     ui->label_16->setStyleSheet("QLabel {background-color : #338B97;}");
     ui->label_18->setText("");
