@@ -1,0 +1,238 @@
+.scenes
+{
+background-color: rgba(240, 240, 240, 0.5);
+float: right;
+width: 65%;
+height: 855px;
+border-collapse: separate;
+text-align: center ;
+}
+body
+{
+    background-color: bisque;
+    background-size: 100%;
+    background-attachment:fixed;
+    font-family: 'Konkhmer Sleokchher', cursive;
+}
+header
+{
+    font-size: 40px;
+    color:black;
+}
+a
+{
+    text-decoration:none;
+}
+.menu
+{
+    color: rgb(45, 255, 0) ;
+    background-color: rgb(70, 70, 70) ;
+    border-spacing: 5px;
+    width: 12%;
+    height: 855px;
+    float: left;
+    border-width: 2px;
+    border-style: solid;
+    border-image: linear-gradient(to bottom, rgb(45, 255, 0), rgb(255, 0, 230)) 1;
+    background-color: rgb(70, 70, 70) ;
+    text-align: center ;
+}
+.base
+{
+    color: #ccc;
+    background-color: rgb(70, 70, 70) ;
+    border-spacing: 5px;
+    height: 855px;
+    float: left;
+    border-width: 2px;
+    border-style: solid;
+    border-image: linear-gradient(to bottom, rgb(45, 255, 0), rgb(255, 0, 230)) 1;
+    background-color: rgb(70, 70, 70) ;
+    text-align: center ;
+    width:100%;
+}
+.scene
+{
+background-color: rgba(240, 240, 240, 0.5);
+float: right;
+width: 100%;
+height: 855px;
+border-collapse: separate;
+text-align: center ;
+}
+table, th, td{
+    border:1px solid black;
+}
+.avatar
+{
+    height:200px;
+    width:200px;
+    background-color: none;
+}
+.banner
+{
+    height:150px;
+    width:100%;
+    border-spacing:15px;
+}
+tr
+{
+    height: 15%;
+}
+.img
+{
+    background-color: none;
+}
+.tabscene
+{
+
+    width: 172px;
+    height: 152px;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid black;
+    color:white;
+    cursor: pointer;
+}
+.tabaenregistrer
+{
+
+    width: 172px;
+    height: 152px;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid black;
+    color:white;
+}
+.tabliste
+{
+
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.listescenes
+{
+    color:white;
+    width: 75px;
+    height: 75px;
+    margin: auto;
+    padding: 10px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+.affichage
+{
+    color:white;
+    width: 75px;
+    height: 75px;
+    margin: auto;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.choix a
+{
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+a:link, a:visited
+{
+    color: #ccc;
+}
+
+a:hover, a:active
+{
+    color: #8ebf42;
+}
+
+
+#divConteneur
+{
+    float:right;
+    min-height:260px;
+    height:855px;/*pour IE qui comprend rien, et qui ne reconnait pas min-height, mais qui comprend mal height*/
+    min-width:260px;
+    width:88%;/*pour IE qui comprend rien*/
+    overflow:auto;/*pour activer les scrollbarres*/
+}
+#divConteneur1
+{
+    float:left;
+    min-height:260px;
+    height:855px;/*pour IE qui comprend rien, et qui ne reconnait pas min-height, mais qui comprend mal height*/
+    min-width:260px;
+    width:35%;/*pour IE qui comprend rien*/
+    overflow:auto;/*pour activer les scrollbarres*/
+}
+.divclassiques
+{
+background-color: rgba(240, 240, 240, 0.5);
+float: right;
+width: 88%;
+height: 855px;
+border-collapse: separate;
+text-align: center ;
+}
+header
+{
+    font-family: 'Konkhmer Sleokchher', cursive;
+    font-weight: bold;
+}
+
+.center
+{
+    text-align: center;
+    font-family: 'Konkhmer Sleokchher', cursive;
+}
+
+a:link.bouton, a:visited.bouton
+{
+    color: black;
+    text-decoration:none
+}
+a:hover.bouton, a:active.bouton
+{
+    color: #8ebf42;
+    text-decoration:none
+}
+
+.affichagescene
+{
+    color:white;
+    width: 75px;
+    height: 75px;
+    margin: auto;
+    padding: 10px;
+    border: 1px solid black;
+    cursor:pointer;
+}
+
+.bouton
+{
+    cursor:pointer;
+    font-family: 'Konkhmer Sleokchher', cursive;
+}
+.bouton:hover, .bouton:active
+{
+    color: #8ebf42;
+}
+
+.save
+{
+    cursor:pointer;
+    font-family: 'Konkhmer Sleokchher', cursive;
+    border:0;
+    background:none;
+    color:#ccc;
+    font-size:16px;
+}
+
+.save:hover, .save:active
+{
+    color: #8ebf42;
+}
