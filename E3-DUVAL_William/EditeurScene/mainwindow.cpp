@@ -68,7 +68,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //afficher avec une recherche -------------------------------------------------------------------------------------------------------------------------
 /*    QSqlQuery query;
-    if(query.exec("SELECT nom WHERE id = 2 FROM SceneTest"))
+    if(query.exec("SELECT name WHERE id = 2 FROM Scene"))
     {
         while(query.next())
         {
@@ -84,12 +84,12 @@ MainWindow::MainWindow(QWidget *parent)
 
 /*   //ajouter des valeurs / scene dans scene test ------------------------------------------------------------------------------------------------------------------
  *    QSqlQuery query;
-    query.exec("INSERT INTO SceneTest(nom,couleurscene,L1,L2,L3)"
+    query.exec("INSERT INTO Scene(name,couleurscene,L1,L2,L3)"
                "VALUES ('Testcpp',#814603,#814603,#814603,#814603)");*/
 
-    //ajouter valeur dans scenetest avec vérification console
+    //ajouter valeur dans Scene avec vérification console
     /*QSqlQuery query;
-    if(query.exec("INSERT INTO SceneTest(nom,couleurscene,L1,L2,L3) VALUES ('Testcpp','#814603','#814603','#814603','#814603')"))
+    if(query.exec("INSERT INTO Scene(name,couleurscene,L1,L2,L3) VALUES ('Testcpp','#814603','#814603','#814603','#814603')"))
     {
         std::cout << "La scène à bien été ajoutée" << std::endl;
     }
@@ -100,9 +100,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     //Modification de scène -----------------------------------------------------------------------------------------------------------------------------------
 
-       //modifer scene dans scenetest avec vérification console
+       //modifer scene dans Scene avec vérification console
        /*QSqlQuery query;
-       if(query.exec("UPDATE SceneTest SET nom = 'testmodif' WHERE id = 46"))
+       if(query.exec("UPDATE Scene SET name = 'testmodif' WHERE id = 46"))
        {
            std::cout << "La scène à bien été modifiée" << std::endl;
        }
@@ -207,26 +207,26 @@ void MainWindow::CreerScene()
     ResetColor();
 
     //initialisation des variables reliés au champ de texte à entrer pour pouvoir ajouter les nom et couleur de scène souhaiter par l'utilisateur
-    QString nom = ui->lineEdit->text();
+    QString name = ui->lineEdit->text();
     QString couleurscene = ui->lineEdit_2->text();
     QString couleurL1 = ui->lineEdit_3->text();
     QString couleurL2 = ui->lineEdit_4->text();
     QString couleurL3 = ui->lineEdit_5->text();
 
     //test si les valeurs sont bien rentré
-    /*qDebug() << "Le nom est " << nom;
+    /*qDebug() << "Le nom est " << name;
     qDebug() << "La couleur de la scène est " << couleurscene;
     qDebug() << "La couleur de la première lumière est " << couleurL1;
     qDebug() << "La couleur de la seconde lumière est " << couleurL2;
     qDebug() << "La couleur de la troisième lumière est " << couleurL3;*/
 
     //ajout de la scène
-    if(nom != NULL && couleurscene !=NULL && couleurL1 !=NULL && couleurL2 !=NULL && couleurL3 !=NULL) //si toutes les cases on été remplie
+    if(name != NULL && couleurscene !=NULL && couleurL1 !=NULL && couleurL2 !=NULL && couleurL3 !=NULL) //si toutes les cases on été remplie
     {
         if(VerifHexa(couleurscene) == true && VerifHexa(couleurL1) == true && VerifHexa(couleurL2)== true && VerifHexa(couleurL3) == true)
         {
             QSqlQuery query;
-            if(query.exec("INSERT INTO SceneTest(nom,couleurscene,L1,L2,L3) VALUES (' " +nom+" ','"+couleurscene+"','"+couleurL1+"','"+couleurL2+"','"+couleurL3+"')"))
+            if(query.exec("INSERT INTO Scene(name,couleurscene,L1,L2,L3) VALUES (' " +name+" ','"+couleurscene+"','"+couleurL1+"','"+couleurL2+"','"+couleurL3+"')"))
             {
                 //std::cout << "La scène à bien été ajoutée" << std::endl;
                 ui->label_7->setText("            La scène à bien été crée");
@@ -257,7 +257,7 @@ void MainWindow::CreerScene()
 void MainWindow::AfficherListeScene()
 {
     QSqlQueryModel *model = new QSqlQueryModel();
-    model->setQuery( "SELECT id, nom FROM SceneTest" );  //on sélectionne l'ID et le nom car pas besoin d'afficher le reste
+    model->setQuery( "SELECT id, name FROM Scene" );  //on sélectionne l'ID et le nom car pas besoin d'afficher le reste
     QTableView *view = new QTableView();
     view->setModel( model );
     view->show();
@@ -286,24 +286,24 @@ void MainWindow::RentrerIdModifScene()
     {
         ui->label_9->setText("Vous avez sélectionner la scène id = " +idModif);
 
-        //permet de mettre dans la variable nomselec le nom associé à l'ID choisi
+        //permet de mettre dans la variable nameselec le name associé à l'ID choisi
         QSqlQuery query;
-        if(query.exec("SELECT nom FROM SceneTest WHERE id =" +idModif))
+        if(query.exec("SELECT name FROM Scene WHERE id =" +idModif))
         {
             while(query.next())
             {
-                //qDebug() <<" SELECT nom FROM SceneTest WHERE id ="+idModif;
+                //qDebug() <<" SELECT name FROM Scene WHERE id ="+idModif;
                 for(int x=0; x < query.record().count(); ++x)
                 {
-                    nomSelec = query.value(x).toString() ;
-                    //qDebug() << nomSelec;
+                    nameSelec = query.value(x).toString() ;
+                    //qDebug() << nameSelec;
                 }
             }
         }
 
         //identique pour la couleur
         QSqlQuery query2;
-        if(query2.exec("SELECT couleurscene FROM SceneTest WHERE id =" +idModif))
+        if(query2.exec("SELECT couleurscene FROM Scene WHERE id =" +idModif))
         {
             while(query2.next())
             {
@@ -317,7 +317,7 @@ void MainWindow::RentrerIdModifScene()
 
         //identique pour la couleur L1
         QSqlQuery query3;
-        if(query3.exec("SELECT L1 FROM SceneTest WHERE id =" +idModif))
+        if(query3.exec("SELECT L1 FROM Scene WHERE id =" +idModif))
         {
             while(query3.next())
             {
@@ -331,7 +331,7 @@ void MainWindow::RentrerIdModifScene()
 
         //identique pour la couleur L2
         QSqlQuery query4;
-        if(query4.exec("SELECT L2 FROM SceneTest WHERE id =" +idModif))
+        if(query4.exec("SELECT L2 FROM Scene WHERE id =" +idModif))
         {
             while(query4.next())
             {
@@ -345,7 +345,7 @@ void MainWindow::RentrerIdModifScene()
 
         //identique pour la couleur L3
         QSqlQuery query5;
-        if(query5.exec("SELECT L3 FROM SceneTest WHERE id =" +idModif))
+        if(query5.exec("SELECT L3 FROM Scene WHERE id =" +idModif))
         {
             while(query5.next())
             {
@@ -358,12 +358,12 @@ void MainWindow::RentrerIdModifScene()
         }
 
        /*
-        ui->label_17->setText("La scène sélectionner est donc : id = "+idModif+ ", Nom = " +nomSelec+ ", Couleur = " +couleurSceneSelec);
+        ui->label_17->setText("La scène sélectionner est donc : id = "+idModif+ ", name = " +nameSelec+ ", Couleur = " +couleurSceneSelec);
         ui->label_18->setText( "Lumière 1 = " +couleurL1Selec+ ", Lumière 2 = " +couleurL2Selec+ ", Lumière 3 = " +couleurL3Selec);
         */
 
         //Pre rempli les line edit des valeurs actuelle de la BDD
-        ui->lineEdit_7->setText(nomSelec);
+        ui->lineEdit_7->setText(nameSelec);
         ui->lineEdit_8->setText(couleurSceneSelec);
         ui->lineEdit_9->setText(couleurL1Selec);
         ui->lineEdit_10->setText(couleurL2Selec);
@@ -402,7 +402,7 @@ void MainWindow::ModifScene()
     }
     else  //sinon effectuer toute la fonction de modification
     {
-        QString nomModif = ui->lineEdit_7->text();
+        QString nameModif = ui->lineEdit_7->text();
         QString couleursceneModif = ui->lineEdit_8->text();
         QString couleurL1Modif = ui->lineEdit_9->text();
         QString couleurL2Modif = ui->lineEdit_10->text();
@@ -411,7 +411,7 @@ void MainWindow::ModifScene()
 
 
         //test dans la console si les valeurs sont bien rentré
-        /*qDebug() << "Le nom est " << nomModif;
+        /*qDebug() << "Le nom est " << nameModif;
         qDebug() << "La couleur de la scène est " << couleursceneModif;
         qDebug() << "La couleur de la première lumière est " << couleurL1Modif;
         qDebug() << "La couleur de la seconde lumière est " << couleurL2Modif;
@@ -420,13 +420,13 @@ void MainWindow::ModifScene()
 
         //modification de la scène
 
-        if(nomModif != NULL && couleursceneModif !=NULL && couleurL1Modif !=NULL && couleurL2Modif !=NULL && couleurL3Modif !=NULL) //si toutes les cases ont été remplie
+        if(nameModif != NULL && couleursceneModif !=NULL && couleurL1Modif !=NULL && couleurL2Modif !=NULL && couleurL3Modif !=NULL) //si toutes les cases ont été remplie
         {
             if(VerifHexa(couleursceneModif) == true && VerifHexa(couleurL1Modif) == true && VerifHexa(couleurL2Modif)== true && VerifHexa(couleurL3Modif) == true)
             {
-                //qDebug() << "UPDATE SceneTest SET nom = '"+nomModif+"', couleurscene = '"+couleursceneModif+"', L1 = '"+couleurL1Modif+"', L2 = '"+couleurL2Modif+"', L3 = '"+couleurL3Modif+"' WHERE id = "+idModif;
+                //qDebug() << "UPDATE Scene SET name = '"+nameModif+"', couleurscene = '"+couleursceneModif+"', L1 = '"+couleurL1Modif+"', L2 = '"+couleurL2Modif+"', L3 = '"+couleurL3Modif+"' WHERE id = "+idModif;
                 QSqlQuery query;
-                if(query.exec("UPDATE SceneTest SET nom = '"+nomModif+"', couleurscene = '"+couleursceneModif+"', L1 = '"+couleurL1Modif+"', L2 = '"+couleurL2Modif+"', L3 = '"+couleurL3Modif+"' WHERE id = "+idModif))
+                if(query.exec("UPDATE Scene SET name = '"+nameModif+"', couleurscene = '"+couleursceneModif+"', L1 = '"+couleurL1Modif+"', L2 = '"+couleurL2Modif+"', L3 = '"+couleurL3Modif+"' WHERE id = "+idModif))
                 {
                     //std::cout << "La scène à bien été modifiée" << std::endl;
                     ui->label_16->setText("      La scène à bien été modifiée");
@@ -474,7 +474,7 @@ void MainWindow::SupprimerScene()
     {
     //suppression de la scène
     QSqlQuery query;
-    if(query.exec("DELETE FROM SceneTest WHERE id ="+idModif))
+    if(query.exec("DELETE FROM Scene WHERE id ="+idModif))
     {
         //std::cout << "La scène à bien été supprimer" << std::endl;
         ui->label_15->setText("La scène à bien été supprimée");
@@ -632,8 +632,6 @@ void MainWindow::ResetColor()
     ui->label_7->setStyleSheet("QLabel {background-color : #338B97;}");
     ui->label_15->setText("");
     ui->label_15->setStyleSheet("QLabel {background-color : #338B97;}");
-    ui->label_16->setText("");
-    ui->label_16->setStyleSheet("QLabel {background-color : #338B97;}");
     ui->label_18->setText("");
     ui->label_18->setStyleSheet("QLabel {background-color : #338B97;}");
 }

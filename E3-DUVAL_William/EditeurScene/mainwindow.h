@@ -23,18 +23,18 @@ public:
 private:
     Ui::MainWindow *ui;
     QSqlDatabase db;
-    QString nom;
+    QString name;
     QString couleurscene;
     QString couleurL1;
     QString couleurL2;
     QString couleurL3;
     QString idModif;
-    QString nomModif;
+    QString nameModif;
     QString couleursceneModif;
     QString couleurL1Modif;
     QString couleurL2Modif;
     QString couleurL3Modif;
-    QString nomSelec;
+    QString nameSelec;
     QString couleurSceneSelec;
     QString couleurL1Selec;
     QString couleurL2Selec;
