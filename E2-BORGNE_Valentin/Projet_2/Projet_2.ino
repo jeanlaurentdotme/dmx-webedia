@@ -7,12 +7,15 @@ bool sendValuePot = false;
 bool sendText = false;
 String sentence2, sentence;
 int bp1 = 12;
+
+bool lastPushedState1 = false;
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
   pinMode(bp1, INPUT_PULLUP);
   lcd.begin(16, 2);
-  Serial.setTimeout(10);
+  //Serial.setTimeout(5);
 }
 
 void loop() {
@@ -26,32 +29,37 @@ void loop() {
   nbValues++;
   if (Serial.available() > 0)
   {
-    val = Serial.readString();
-    if (val=="1")
+    val = Serial.readStringUntil('\n');
+    if (val[0]=='1')
     {
-        sentence = "{\"p1\":";
+        sentence = "{\"type\":\"potValues\",\"p1\":";
         sentence += cumulP1 / nbValues;
         sentence += "}";
         Serial.println(sentence);
       //sendValuePot = true;
     }
-    else
+    else if(val[0] == '2')
     {
       lcd.clear();
       lcd.setCursor(0, 0);
-      //lcd.print(val);
-      lcd.print("tu joue a cs");
-      lcd.setCursor(0,1);
-      lcd.print("apres genshin");
+      lcd.print(val.substring(2));
     }
     /*if (sendValuePot)
     {
         sendValuePot = false;
     }*/
   }
-    if (b1 == LOW)
+    if (b1 == LOW && !lastPushedState1)
     {
-      Serial.println("button pressed");
-      delay(100);
+      sentence = "{\"type\":\"button\",\"b1\":1}";
+      Serial.println(sentence);
     }
+    
+    if(b1 == HIGH && lastPushedState1)
+    {
+      sentence = "{\"type\":\"button\",\"b1\":0}";
+      Serial.println(sentence);
+    }
+
+    lastPushedState1 = b1 == LOW;
 }
