@@ -14,16 +14,16 @@ ConsoleMaterielle::ConsoleMaterielle(QObject* parent)
     : QObject(parent)
 {
     potentiometre1 = 0;
-    serialPort->setPortName("COM7"); // Remplacez COM1 par le nom du port série que vous voulez ouvrir
-    serialPort->setBaudRate(QSerialPort::Baud9600); // Définir le débit en bauds
-    serialPort->setDataBits(QSerialPort::Data8); // Définir le nombre de bits de données
-    serialPort->setParity(QSerialPort::NoParity); // Définir le type de parité
-    serialPort->setStopBits(QSerialPort::OneStop); // Définir le nombre de bits de stop
-    serialPort->setFlowControl(QSerialPort::NoFlowControl); // Définir le contrôle de flux
+    serialPort->setPortName("COM7"); // Remplacez COM1 par le nom du port serie que vous voulez ouvrir
+    serialPort->setBaudRate(QSerialPort::Baud9600); // Definir le debit en bauds
+    serialPort->setDataBits(QSerialPort::Data8); // Definir le nombre de bits de donnees
+    serialPort->setParity(QSerialPort::NoParity); // Definir le type de parite
+    serialPort->setStopBits(QSerialPort::OneStop); // Definir le nombre de bits de stop
+    serialPort->setFlowControl(QSerialPort::NoFlowControl); // Definir le contrôle de flux
     QObject::connect(serialPort, &QSerialPort::readyRead, this, &ConsoleMaterielle::onReadyRead);
 
     if (serialPort->open(QIODevice::ReadWrite)) {
-        // Le port série est ouvert avec succès
+        // Le port serie est ouvert avec succès
         init = true;
         QObject::connect(&timer, &QTimer::timeout, this, &ConsoleMaterielle::requete);
         timer.start(25);
@@ -32,7 +32,7 @@ ConsoleMaterielle::ConsoleMaterielle(QObject* parent)
         sendTimer.start(15);
     }
     else {
-        // Échec de l'ouverture du port série
+        // Echec de l'ouverture du port serie
         init = false;
     }
 }
