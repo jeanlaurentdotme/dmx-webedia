@@ -19,11 +19,11 @@ ConsoleMaterielle::ConsoleMaterielle(QObject* parent)
     serialPort->setDataBits(QSerialPort::Data8); // Definir le nombre de bits de donnees
     serialPort->setParity(QSerialPort::NoParity); // Definir le type de parite
     serialPort->setStopBits(QSerialPort::OneStop); // Definir le nombre de bits de stop
-    serialPort->setFlowControl(QSerialPort::NoFlowControl); // Definir le contrôle de flux
+    serialPort->setFlowControl(QSerialPort::NoFlowControl); // Definir le controle de flux
     QObject::connect(serialPort, &QSerialPort::readyRead, this, &ConsoleMaterielle::onReadyRead);
 
     if (serialPort->open(QIODevice::ReadWrite)) {
-        // Le port serie est ouvert avec succès
+        // Le port serie est ouvert avec succes
         init = true;
         QObject::connect(&timer, &QTimer::timeout, this, &ConsoleMaterielle::requete);
         timer.start(25);
