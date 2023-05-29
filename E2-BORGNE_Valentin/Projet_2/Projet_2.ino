@@ -11,11 +11,9 @@ int bp1 = 12;
 bool lastPushedState1 = false;
 
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(9600);
   pinMode(bp1, INPUT_PULLUP);
   lcd.begin(16, 2);
-  //Serial.setTimeout(5);
 }
 
 void loop() {
@@ -36,7 +34,6 @@ void loop() {
         sentence += cumulP1 / nbValues;
         sentence += "}";
         Serial.println(sentence);
-      //sendValuePot = true;
     }
     else if(val[0] == '2')
     {
@@ -44,10 +41,6 @@ void loop() {
       lcd.setCursor(0, 0);
       lcd.print(val.substring(2));
     }
-    /*if (sendValuePot)
-    {
-        sendValuePot = false;
-    }*/
   }
     if (b1 == LOW && !lastPushedState1)
     {
