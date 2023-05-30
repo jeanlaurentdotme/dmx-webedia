@@ -34,7 +34,7 @@ private slots:
 public slots:
 
 signals:
-    // potValueChanged : paramètre 1 = numéro du potentiomètre ; paramètre 2 = valeur du potentiomètre
+    // potValueChanged : parametre 1 = numero du potentiometre ; parametre 2 = valeur du potentiometre
     void potValueChanged(int, int);
     void buttonPushed(int, int);
 
