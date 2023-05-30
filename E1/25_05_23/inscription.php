@@ -16,7 +16,7 @@
   <!-- formulaire permettant de s'inscrire -->
   <header class="center">Inscription à l'espace membre :</header><br />
   <form action="verifinscription.php" method="post" class="center">
-    <label for="login">Pseudo</label><br />
+    <label for="login">Login</label><br />
     <input type="text" id="login" name="login" value=""><br />
 
     <label for="pwd1">Mot de passe</label><br />
