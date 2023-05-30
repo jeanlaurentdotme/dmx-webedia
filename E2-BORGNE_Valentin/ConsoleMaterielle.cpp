@@ -14,7 +14,7 @@ ConsoleMaterielle::ConsoleMaterielle(QObject* parent)
     : QObject(parent)
 {
     potentiometre1 = 0;
-    serialPort->setPortName("COM7"); // Remplacez COM1 par le nom du port serie que vous voulez ouvrir
+    serialPort->setPortName("COM7");
     serialPort->setBaudRate(QSerialPort::Baud9600); // Definir le debit en bauds
     serialPort->setDataBits(QSerialPort::Data8); // Definir le nombre de bits de donnees
     serialPort->setParity(QSerialPort::NoParity); // Definir le type de parite
