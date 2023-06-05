@@ -1,15 +1,4 @@
 <?php
-
-   function hex2RGB($hexStr, $returnAsString = false, $seperator = ',')
-   {
-      $hexStr = preg_replace("/[^0-9A-Fa-f]/", '', $hexStr);
-      $rgbArray = array();
-      $colorVal = hexdec($hexStr);
-      $rgbArray['red'] = 0xFF & ($colorVal >> 0x10);
-      $rgbArray['green'] = 0xFF & ($colorVal >> 0x8);
-      $rgbArray['blue'] = 0xFF & $colorVal;
-      return $returnAsString ? implode($seperator, $rgbArray) : $rgbArray;
-   }
 // fichier comportant les infos de connexion à la BDD
 include ("connect.php");
 
@@ -40,29 +29,30 @@ if (isset($_POST['enregistrer']) && $_POST['enregistrer'] == 'Enregistrer')
       
       $equipData = getInstantiatedEquipments($connexion);
 
-
+      $keys = array_keys($equipData);
       // on ajoute la nouvelle scène dans la BDD
-      $sql = 'INSERT INTO SceneTest(id, name, couleurscene) VALUES(0,"'.mysqli_escape_string($connexion, $_POST['nom']).'","'.mysqli_escape_string($connexion, $_POST['background']).'")';
+      $sql = 'INSERT INTO Scene(id, name, couleurscene) VALUES(0,"'.mysqli_escape_string($connexion, $_POST['nom']).'","'.mysqli_escape_string($connexion, $_POST['background']).'")';
       mysqli_query($connexion, $sql) or die('Erreur SQL !'.$sql.'<br />'.mysqli_error($connexion));
-
       $last_id = mysqli_insert_id($connexion);
-      $nb = $_POST['compteur'];
-      for ($i=0; $i<$nb;$i++){
-         $j = $i + 1;
-         $canr = 3*$i + 1;
-         $cang = 8*$i + 2;
-         $canb = 8*$i + 3;
-         $couleur = $_POST['L'.$j];
+
+      for ($i = 0; $i<sizeof($keys); $i++)
+      {
+         $couleur = $_POST['L'.($i +1)];
          $r = substr($couleur, 1, 2);
          $red = hexdec($r);
          $g = substr($couleur, 3, 2);
          $green = hexdec($g);
          $b = substr($couleur, 5, 2);
          $blue = hexdec($b);
-         $sql = 'INSERT INTO CanalValue(idInstanceEquip, idCanalEquip, idScene, value) VALUES('.$j.','.$canr.','.$last_id.', '.$red.'), ('.$j.','.$cang.','.$last_id.', '.$green.'), ('.$j.','.$canb.','.$last_id.', '.$blue.')';
+         $idcanal1 = $equipData[$keys[$i]]['data'][0]['idCanal'];
+         $idcanal2 = $equipData[$keys[$i]]['data'][1]['idCanal'];
+         $idcanal3 = $equipData[$keys[$i]]['data'][2]['idCanal'];
+
+         //echo(json_encode($equipData));
+
+         $sql = 'INSERT INTO CanalValue(idInstanceEquip, idCanalEquip, idScene, value) VALUES('.$keys[$i].', '.$idcanal1.', '.$last_id.', '.$red.'), ('.$keys[$i].', '.$idcanal2.', '.$last_id.', '.$green.'), ('.$keys[$i].', '.$idcanal3.', '.$last_id.', '.$blue.')';
          mysqli_query($connexion, $sql) or die('Erreur SQL !'.$sql.'<br />'.mysqli_error($connexion));
       }
-
 
       header('Location: admin.php');
 

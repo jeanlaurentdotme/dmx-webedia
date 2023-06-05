@@ -9,42 +9,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Konkhmer+Sleokchher&display=swap" rel="stylesheet">
-    <script>
-        function ajoutlum()
-        {
-            var divParent = document.getElementById('divParent');
-            var nouveauLabel = document.createElement('label');
-            var nouveauInput = document.createElement('input');
-            var nb = document.getElementById('nb');
-            i = Number(document.getElementById('nb').value) + 1;
-            nouveauLabel.appendChild(document.createTextNode(" Couleur de la "+i+"ème lumière "));
-            nouveauLabel.htmlFor = "Lumière "+i;
-            nouveauInput.type = 'color';
-            nouveauInput.name = 'L'+i;
-            nouveauInput.id = i;
-            divParent.appendChild(nouveauLabel);
-            divParent.appendChild(nouveauInput);
-            nb.setAttribute("value",i);
-            if (i%3==0)
-            {
-                var br = document.createElement('br');
-                divParent.appendChild(br);
-            }
-        }
-        function enleverlum()
-        {
-            var divParent = document.getElementById('divParent');
-            divParent.removeChild(divParent.lastChild);
-            divParent.removeChild(divParent.lastChild);
-            var nb = document.getElementById('nb');
-            i = Number(document.getElementById('nb').value) - 1;
-            nb.setAttribute("value",i);
-            if (i%3==2)
-            {
-                divParent.removeChild(divParent.lastChild);
-            }
-        }
-    </script>
 </head>
 
 <body>
@@ -126,11 +90,6 @@
 ?>
                 </div>
 
-
-                <br />
-                <input type="button" onclick="ajoutlum()" value="Ajouter une lumière">
-                <input type="button" onclick="enleverlum()" value="Enelever une lumière">
-                <input type="hidden" name="compteur" id="nb" value="1">
                 <br />
                 <input class="bouton" type="submit" name="enregistrer" value="Enregistrer">
             </form>

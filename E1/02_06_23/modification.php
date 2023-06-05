@@ -37,7 +37,7 @@
 
     // on récupère la liste des scènes déjà enregistrées dans la BDD
     $connect = new mysqli(SERVEUR, LOGIN, MDP, BDD);
-    $sql = 'SELECT * FROM Scene';
+    $sql = 'SELECT * FROM SceneTest';
     $resultat = $connect->query($sql);
     ?>
     <header>Sélectionnez une scène à modifier</header>

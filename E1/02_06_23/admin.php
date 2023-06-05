@@ -9,6 +9,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Konkhmer+Sleokchher&display=swap" rel="stylesheet">
+    <script>
+        const envoiscene = new WebSocket("ws://198.168.65.44:3000");
+        function envoi(id)
+        {
+            envoiscene.send(id);
+        }
+    </script>
 </head>
 
 <body>
@@ -112,7 +119,7 @@
                                 while ($listescene = $reqscene->fetch_assoc())
                                 {
                                     ?>
-                                    <td class="affichagescene" style=background-color:<?php echo $listescene['couleurscene'] ?> id="<?php echo $idscene[$j] ?>"><?php echo $listescene['name'] ?></td>
+                                    <td class="affichagescene" style=background-color:<?php echo $listescene['couleurscene'] ?> id="<?php echo $idscene[$j] ?>" onclick="envoi(<?php echo $idscene[$j] ?>);"><?php echo $listescene['name'] ?></td>
                                     <?php
                                 }
                                 $result = 1;
