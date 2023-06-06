@@ -5,6 +5,7 @@
 #include <QSerialPortInfo>
 #include <QSerialPort>
 #include <QTimer>
+#include "ConsoleMaterielle.h"
 
 class QtWidgetsApplication3 : public QMainWindow
 {
@@ -15,16 +16,10 @@ public:
 
 private:
     Ui::QtWidgetsApplication3Class ui;
-    QSerialPort *serialPort = new QSerialPort();
-    int potentiometre1;
-    QString buffer;
-    QTimer timer;
+    ConsoleMaterielle* console;
 
 public slots:
-    void potValuesCheckBoxChecked(int state);
-    //void sendCheckboxData();
-    void requete();
-    void onReadyRead();
+    void onPotValueChanged(int, int);
+    void onButtonPushed(int, int);
     void sendText();
-    void buttonClicked();
 };
