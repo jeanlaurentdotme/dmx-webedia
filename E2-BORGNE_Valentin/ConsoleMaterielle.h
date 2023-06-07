@@ -10,7 +10,7 @@ class ConsoleMaterielle : public QObject
 
 private:
     bool init;
-    QSerialPort* serialPort = new QSerialPort();
+    QSerialPort* serialPort;
     int potentiometre1;
     QString buffer;
     QTimer timer;
