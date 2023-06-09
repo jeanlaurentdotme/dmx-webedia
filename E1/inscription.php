@@ -1,21 +1,32 @@
+<!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset='utf-8'>
-    <title>Inscription</title>
-    <link rel='stylesheet' href='css/main.css'/>
-  <!---
-    <script src='main.js'></script>
-  -->
-  <link rel="icon" type="image/png" href="images/icone.png"/>
+  <meta charset='utf-8'>
+  <title>Gestion de scènes</title>
+  <link rel='stylesheet' href='css/main.css' /> 
+  <link rel="icon" type="image/png" href="images/webedia.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Konkhmer+Sleokchher&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    Inscription à l'espace membre :<br/>
-    <form action="verification.php" method="post">
-        pseudo<input type="text" name="nom" value=""><br />
-        login<input type="text" name="login" value=""><br />
-        mot de passe<input type="password" name="mdp1" value=""><br />
-        confirmation mdp<input type="password" name="mdp2" value=""><br />
-        <input type="submit" name="inscription" value="Inscription">
-    </form>
+<img src="images/webedia_banner.png" alt="Bannière de Webedia">
+  <!-- formulaire permettant de s'inscrire -->
+  <header class="center">Inscription à l'espace membre :</header><br />
+  <form action="verifinscription.php" method="post" class="center">
+    <label for="login">Login</label><br />
+    <input type="text" id="login" name="login" value=""><br />
+
+    <label for="pwd1">Mot de passe</label><br />
+    <input type="password" id="pwd1" name="mdp1" value=""><br />
+
+    <label for="pwd2">Confirmation du mot de passe</label><br />
+    <input type="password" id="pwd2" name="mdp2" value=""><br />
+    <input class="bouton" type="submit" name="inscription" value="Inscription">
+    <button><a class="bouton" href="index.php">Se connecter</a>
+  </form>
 </body>
+
 </html>
