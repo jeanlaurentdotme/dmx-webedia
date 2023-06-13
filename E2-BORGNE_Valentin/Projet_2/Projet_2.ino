@@ -23,7 +23,7 @@ void loop() {
    cumulP1 = 0;
    nbValues = 0;
   }
-  cumulP1 += analogRead(A0)/4;
+  cumulP1 += analogRead(A2)/4;
   nbValues++;
   if (Serial.available() > 0)
   {
@@ -41,6 +41,10 @@ void loop() {
       lcd.setCursor(0, 0);
       lcd.print(val.substring(2));
     }
+    /*if (sendValuePot)
+    {
+        sendValuePot = false;
+    }*/
   }
     if (b1 == LOW && !lastPushedState1)
     {
