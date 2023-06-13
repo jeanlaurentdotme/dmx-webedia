@@ -50,5 +50,5 @@ void QtWidgetsApplication3::onPotValueChanged(int potentiometre, int value)
     ui.verticalSlider->setValue(value);
 
     QByteArray hexVal = QByteArray::number(value, 16);
-    qDebug() << hexVal;
+    //qDebug() << hexVal;
 }
